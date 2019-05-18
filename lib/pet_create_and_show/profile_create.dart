@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'db.dart';
+import 'package:petween/model/db.dart';
 
 class ProfileCreatePage extends StatefulWidget {
   @override
@@ -12,7 +12,7 @@ Widget _buildBody(
 
   return StreamBuilder<QuerySnapshot>(
     stream:  Firestore.instance
-        .collection('products').snapshots(),
+        .collection('pet').snapshots(),
     builder: (context, snapshot) {
       if (!snapshot.hasData) return LinearProgressIndicator();
 
@@ -46,15 +46,22 @@ Widget _buildCard(BuildContext context, DocumentSnapshot data) {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  record.name,
+                  record.userName,
                   style: TextStyle(fontWeight: FontWeight.bold),
                   maxLines: 1,
                 ),
                 SizedBox(height: 4.0),
-                Text(
-                  record.pet.toString(),
-                  style: TextStyle(fontSize: 10),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).pushNamed('/tab');
+                  },
+                  child: Container(
+                    child: Text(
+                      record.pet.toString(),
+                    ),
+                  ),
                 ),
+
               ],
             ),
           ),
@@ -84,10 +91,26 @@ class _ProfileCreatePageState extends State<ProfileCreatePage>{
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
 
-                  Text('name 님! 안녕하세요'),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text('name 님! 안녕하세요'),
+                  ),
                 ],
               ),
               _buildBody(context),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+
+                  FlatButton(
+                    child: Text('                ADD PET                ',style: TextStyle(color: Colors.white),),
+                    color: Color(0xFFFFCA28),
+                    onPressed: (){
+                      Navigator.of(context).pushNamed('/addpet');
+                    },
+                  ),
+                ],
+              ),
             ],
           ),
         )
