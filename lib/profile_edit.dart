@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'db.dart' as db;
+import 'package:petween/model/db.dart' as db;
 
 var _nameController = TextEditingController();
 var _nickController = TextEditingController();
@@ -88,7 +87,7 @@ class _ProfileEditPageState extends State<ProfileEditPage>{
               child: Text('확인'),
               onPressed:(){
                 record.reference.updateData(
-                    {'name' : _nameController,
+                    {'petname' : _nameController,
                       'kind' : _kindCat,
                       'birthyear' : _birthyear,
                       'birthmonth' : _birthmonth,
@@ -114,7 +113,7 @@ class _ProfileEditPageState extends State<ProfileEditPage>{
 Widget _buildBody(BuildContext context){
   return StreamBuilder<DocumentSnapshot>(
     stream: Firestore.instance.
-    collection('pet').document(record.name).snapshots(),
+    collection('pet').document(record.petname).snapshots(),
     builder: (context,snapshot){
       if(!snapshot.hasData) return LinearProgressIndicator();
 

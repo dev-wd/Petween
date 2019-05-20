@@ -1,8 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'db.dart' as db;
-import 'login.dart';
+import 'package:petween/model/db.dart' as db;
 
 FirebaseUser mCurrenUser;
 List<bool> expandedStatus =[false,false];
@@ -27,12 +26,6 @@ class _SettingPageState extends State<SettingPage>{
         appBar: AppBar(
             title: Text('환경설정',style: TextStyle(color: Color(0xFF5D4037))),
             backgroundColor: Color(0xFFFFCA28),
-            leading: IconButton(
-              icon: Icon(Icons.arrow_back,),
-              onPressed: (){
-                Navigator.of(context).pop();
-              },
-            )
         ),
         body: Center(
           child: Column(

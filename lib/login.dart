@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'db.dart' as db;
-import 'profile_create.dart';
+import 'package:petween/model/db.dart' as db;
+import 'package:petween/pet_create_and_show/profile_create.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -138,8 +138,14 @@ class _LoginPageState extends State<LoginPage>{
                     height: 50.0,
                     child: RaisedButton(
                         onPressed: () async {
-                        _signInWithGoogle();
+                          _signInWithGoogle().then((FirebaseUser user) {
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(
+                                builder: (BuildContext context) => ProfileCreatePage()))
+                                .catchError((e) => print(e));
                         },
+                          );
+                          },
 
                         child: Container(
                           padding: const EdgeInsets.all(10.0),

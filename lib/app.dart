@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'pre_login.dart';
+import 'package:petween/login/pre_login.dart';
 import 'login.dart';
-import 'profile_create.dart';
-import 'setting.dart';
-import 'signin.dart';
+import 'package:petween/pet_create_and_show/profile_create.dart';
+import 'package:petween/setting/setting.dart';
+import 'package:petween/login/signin.dart';
 import 'profile_edit.dart';
 
 class PetweenApp extends StatelessWidget {
