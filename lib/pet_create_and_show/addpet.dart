@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
-class SettingPage extends StatefulWidget {
+class AddPetPage extends StatefulWidget {
   @override
-  _SettingPageState createState() => new _SettingPageState();
+  _AddPetPageState createState() => new _AddPetPageState();
 }
 
-class _SettingPageState extends State<SettingPage>{
+class _AddPetPageState extends State<AddPetPage>{
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(
-            title: Text('setting'),
+            title: Text('addpet'),
             backgroundColor: Color(0xFFFFCA28),
             leading: IconButton(
               icon: Icon(Icons.arrow_back,),
