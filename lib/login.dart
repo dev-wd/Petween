@@ -138,8 +138,14 @@ class _LoginPageState extends State<LoginPage>{
                     height: 50.0,
                     child: RaisedButton(
                         onPressed: () async {
-                        _signInWithGoogle();
+                          _signInWithGoogle().then((FirebaseUser user) {
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(
+                                builder: (BuildContext context) => ProfileCreatePage()))
+                                .catchError((e) => print(e));
                         },
+                          );
+                          },
 
                         child: Container(
                           padding: const EdgeInsets.all(10.0),
