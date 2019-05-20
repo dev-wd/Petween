@@ -4,6 +4,7 @@ import 'login.dart';
 import 'profile_create.dart';
 import 'setting.dart';
 import 'signin.dart';
+import 'profile_edit.dart';
 
 class PetweenApp extends StatelessWidget {
 
@@ -19,6 +20,7 @@ class PetweenApp extends StatelessWidget {
         '/catchoice': (BuildContext context) => ProfileCreatePage(),
         '/setting': (BuildContext context) => SettingPage(),
         '/signin' : (BuildContext context) => SignInPage(),
+        '/edit' : (BuildContext context) => ProfileEditPage(),
       },
     );
   }
