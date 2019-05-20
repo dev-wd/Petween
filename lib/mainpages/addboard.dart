@@ -1,25 +1,19 @@
 import 'package:flutter/material.dart';
 
-class ProfileCreatePage extends StatefulWidget {
+class AddBoardPage extends StatefulWidget {
   @override
-  _ProfileCreatePageState createState() => new _ProfileCreatePageState();
+  _AddBoardPageState createState() => new _AddBoardPageState();
 }
 
-class _ProfileCreatePageState extends State<ProfileCreatePage>{
+class _AddBoardPageState extends State<AddBoardPage>{
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(
-          title: Text('profile create'),
+          title: Text('addboard'),
           backgroundColor: Color(0xFFFFCA28),
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back,),
-            onPressed: (){
-              Navigator.of(context).pop();
-            },
-          )
         ),
         body: Center(
           child: IconButton(
