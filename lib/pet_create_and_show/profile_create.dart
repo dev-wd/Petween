@@ -57,7 +57,7 @@ Widget _buildCard(BuildContext context, DocumentSnapshot data) {
                   },
                   child: Container(
                     child: Text(
-                      record.pet.toString(),
+                      record.petname.toString(),
                     ),
                   ),
                 ),
