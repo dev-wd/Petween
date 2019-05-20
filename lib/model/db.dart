@@ -17,15 +17,15 @@ class db {
   String meetday;
   String gender;
   String kind;
+  String uid;
   String nickname;  //고양이 닉네임
   String petname;//고양이이름
   final DocumentReference reference;
 
   db.fromMap(Map<String, dynamic> map, String docID, {this.reference})
-      : assert(map['pet'] != null),
-        assert(map['name'] != null),
+      : assert(map['userName'] != null),
         assert(map['email'] != null),
-        userName = map['username'],
+        userName = map['userName'],
         email = map['email'],
         birthday = map['birthday'],
         birthmonth = map['birthmonth'],
@@ -36,7 +36,8 @@ class db {
         gender = map['gender'],
         kind = map['kind'],
         nickname = map['nickname'],
-        petname = map['petname'];
+        petname = map['petname'],
+        uid = map['uid'];
   db.fromSnapshot(DocumentSnapshot snapshot)
     :this.fromMap(snapshot.data, snapshot.documentID, reference: snapshot.reference);
 
