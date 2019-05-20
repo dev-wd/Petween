@@ -11,6 +11,7 @@ import 'package:petween/mainpages/addboard.dart';
 import 'package:petween/mainpages/nyanggaebu.dart';
 import 'package:petween/mainpages/nyangsta.dart';
 import 'package:petween/mainpages/qna.dart';
+import 'package:petween/profile_edit.dart';
 
 class PetweenApp extends StatelessWidget {
 
@@ -33,6 +34,7 @@ class PetweenApp extends StatelessWidget {
         '/nyanggaebu' : (BuildContext context) => NyangGaeBuPage(),
         '/qna' : (BuildContext context) => QNAPage(),
         '/nyangsta' : (BuildContext context) => NyangStaPage(),
+        '/edit' : (BuildContext context) => ProfileEditPage(),
       },
     );
   }
