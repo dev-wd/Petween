@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:petween/mainpages/home.dart';
 import 'package:petween/setting/setting.dart';
 import 'package:petween/mainpages/addboard.dart';
-import 'package:petween/mainpages/nyanggaebu.dart';
+import 'package:petween/mainpages/nyanggaebu/nyanggaebu.dart';
 import 'package:petween/mainpages/nyangsta.dart';
 import 'package:petween/mainpages/qna.dart';
 

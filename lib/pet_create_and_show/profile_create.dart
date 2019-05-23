@@ -46,7 +46,7 @@ Widget _buildCard(BuildContext context, DocumentSnapshot data) {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  record.userName,
+                  record.nickname,
                   style: TextStyle(fontWeight: FontWeight.bold),
                   maxLines: 1,
                 ),

@@ -18,8 +18,8 @@ class db {
   String gender;
   String kind;
   String uid;
-  String nickname;  //고양이 닉네임
-  String petname;//고양이이름
+  String nickname;
+  String petname;
   final DocumentReference reference;
 
   db.fromMap(Map<String, dynamic> map, String docID, {this.reference})
