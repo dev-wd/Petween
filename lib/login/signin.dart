@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:petween/login/login.dart';
-
+import 'package:petween/model/db.dart' as db;
 
 class SignInPage extends StatefulWidget {
   @override
@@ -206,7 +205,7 @@ class _SignInPageState extends State<SignInPage> with WidgetsBindingObserver {
         'userName': _userNameController.text,
         'email' : _emailController.text,
       };
-      Firestore.instance.collection('imformation').document().setData(user);
+      Firestore.instance.collection('information').document(db.userUID).setData(user);
       Navigator.of(context).push(MaterialPageRoute(
             builder: (BuildContext context) => LoginPage()));
     }

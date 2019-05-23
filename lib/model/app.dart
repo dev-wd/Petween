@@ -4,14 +4,15 @@ import 'package:petween/login/login.dart';
 import 'package:petween/pet_create_and_show//profile_create.dart';
 import 'package:petween/setting/setting.dart';
 import 'package:petween/login/signin.dart';
-import 'package:petween/pet_create_and_show//addpet.dart';
 import 'package:petween/mainpages/home.dart';
 import 'package:petween/tab.dart';
 import 'package:petween/mainpages/addboard.dart';
-import 'package:petween/mainpages/nyanggaebu.dart';
+import 'package:petween/mainpages/nyanggaebu/nyanggaebu.dart';
 import 'package:petween/mainpages/nyangsta.dart';
 import 'package:petween/mainpages/qna.dart';
-
+import 'package:petween/pet_create_and_show/addpet.dart';
+import 'package:petween/pet_create_and_show/profile_edit.dart';
+import 'package:petween/mainpages/nyanggaebu/listadd.dart';
 class PetweenApp extends StatelessWidget {
 
   @override
@@ -19,8 +20,6 @@ class PetweenApp extends StatelessWidget {
     return MaterialApp(
       title: 'Shrine',
       home: PreloginPage(),
-      //initialRoute: '/login',
-      // onGenerateRoute: _getRoute,
       routes: <String, WidgetBuilder>{
         '/login': (BuildContext context) => LoginPage(),
         '/catchoice': (BuildContext context) => ProfileCreatePage(),
@@ -33,6 +32,9 @@ class PetweenApp extends StatelessWidget {
         '/nyanggaebu' : (BuildContext context) => NyangGaeBuPage(),
         '/qna' : (BuildContext context) => QNAPage(),
         '/nyangsta' : (BuildContext context) => NyangStaPage(),
+        '/edit' : (BuildContext context) => ProfileEditPage(),
+        '/listadd' : (BuildContext context) => ListAddPage(),
+
       },
     );
   }

@@ -12,7 +12,7 @@ class _QNAPageState extends State<QNAPage>{
     // TODO: implement build
     return Scaffold(
         appBar: AppBar(
-          title: Text('qna'),
+          title: Text('QNA'),
           backgroundColor: Color(0xFFFFCA28),
         ),
         body: Center(
