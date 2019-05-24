@@ -196,16 +196,16 @@ class _SignInPageState extends State<SignInPage> with WidgetsBindingObserver {
   }
 
   void register() async {
-    final FirebaseUser user = await _auth.createUserWithEmailAndPassword(
+    final FirebaseUser cuser = await _auth.createUserWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
     );
-    if (user != null) {
+    if (cuser != null) {
       Map<String, dynamic> user = {
         'userName': _userNameController.text,
         'email' : _emailController.text,
       };
-      Firestore.instance.collection('information').document(db.userUID).setData(user);
+      Firestore.instance.collection('information').document(cuser.uid).setData(user);
       Navigator.of(context).push(MaterialPageRoute(
             builder: (BuildContext context) => LoginPage()));
     }

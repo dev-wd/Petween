@@ -13,6 +13,7 @@ class ListAddPage extends StatefulWidget {
 class _ListAddPageState extends State<ListAddPage>{
   String productname;
   String productprice;
+  int _IsBought = 0;
 
   void loadData(){
     dropproductkindadd = [];
@@ -90,12 +91,37 @@ class _ListAddPageState extends State<ListAddPage>{
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+
+              Text('구입여부',style: TextStyle(color:  Color(0xFFFF5A5A))),
+              Row(
+                children: <Widget>[
+                  Text('이미 구입함'),
+                  Radio(
+                    value: 1,
+                    groupValue:_IsBought,
+                    onChanged: (int value){
+                      setState(() {
+                        _IsBought = value;
+                      });
+                    },
+                  ),
+                  Text('구입 예정임'),
+                  Radio(
+                    value: 2,
+                    groupValue:_IsBought,
+                    onChanged: (int value){
+                      setState(() {
+                        _IsBought = value;
+                      });
+                    },
+                  ),
+              ],),
               Padding(
-                padding: const EdgeInsets.only(bottom:16.0),
+                padding: const EdgeInsets.only(bottom:1.0),
                 child: Text('구매 물품 종류',style: TextStyle(color:  Color(0xFFFF5A5A))),
               ),
               Padding(
-                padding: const EdgeInsets.only(left:40.0),
+                padding: const EdgeInsets.only(left:1.0),
                 child: DropdownButton(
                   value: _productkindadd,
                   items: dropproductkindadd ,

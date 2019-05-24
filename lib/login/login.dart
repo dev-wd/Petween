@@ -195,6 +195,9 @@ class _LoginPageState extends State<LoginPage>{
         password: _password
     );
 
+    db.user = user;
+    db.userUID = user.uid;
+    db.userEmail = user.email;
 
     if (user != null){
       _success = true;

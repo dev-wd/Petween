@@ -20,13 +20,12 @@ class db {
   String uid;
   String nickname;
   String petname;
+  String informationID;
   final DocumentReference reference;
 
   db.fromMap(Map<String, dynamic> map, String docID, {this.reference})
-      : assert(map['userName'] != null),
-        assert(map['email'] != null),
-        userName = map['userName'],
-        email = map['email'],
+      : assert(map['petname'] != null),
+        assert(map['nickname'] != null),
         birthday = map['birthday'],
         birthmonth = map['birthmonth'],
         birthyear = map['birthyear'],
@@ -37,11 +36,56 @@ class db {
         kind = map['kind'],
         nickname = map['nickname'],
         petname = map['petname'],
-        uid = map['uid'];
+        uid = map['uid'],
+        informationID = map['informationID'];
   db.fromSnapshot(DocumentSnapshot snapshot)
-    :this.fromMap(snapshot.data, snapshot.documentID, reference: snapshot.reference);
+      :this.fromMap(snapshot.data, snapshot.documentID, reference: snapshot.reference);
 
   @override
-  String toString() => "db<$userName:$email:$gender:$kind:$nickname:$petname>";
+  String toString() => "db<$userName:$email:$gender:$kind:$nickname:$petname:$uid:$informationID>";
 
 }
+
+
+class information {
+  String userName;
+  String email;
+  final DocumentReference reference;
+
+  information.fromMap(Map<String, dynamic> map, String docID, {this.reference})
+      : assert(map['userName'] != null),
+        assert(map['email'] != null),
+        userName = map['userName'],
+        email = map['email'];
+  information.fromSnapshot(DocumentSnapshot snapshot)
+      :this.fromMap(snapshot.data, snapshot.documentID, reference: snapshot.reference);
+
+  @override
+  String toString() => "information<$userName:$email:>";
+}
+
+
+class nyanggaebu {
+  String productkind;
+  String productname;
+  String productprice;
+  bool isbought;
+  final DocumentReference reference;
+
+  nyanggaebu.fromMap(Map<String, dynamic> map, String docID, {this.reference})
+      : assert(map['productkind'] != null),
+        assert(map['productname'] != null),
+        assert(map['productprice'] != null),
+        assert(map['isbought'] != null),
+        productkind = map['productkind'],
+        productname = map['productname'],
+        productprice = map['productprice'],
+        isbought = map['isbought'];
+  nyanggaebu.fromSnapshot(DocumentSnapshot snapshot)
+      :this.fromMap(snapshot.data, snapshot.documentID, reference: snapshot.reference);
+
+  @override
+  String toString() => "nyanggaebu<$productkind:$productname:$productprice:$isbought>";
+
+}
+

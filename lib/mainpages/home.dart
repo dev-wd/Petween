@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
                 size: 40,
               ),
               onPressed: () {
-                Navigator.of(context).pushReplacementNamed('/catchoice');
+                Navigator.of(context).pop();
               },
             ),
             actions: <Widget>[
