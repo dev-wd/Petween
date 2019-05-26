@@ -2,19 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:petween/model/db.dart';
+import 'package:petween/mainpages/nyanggaebu/nyanggaebu.dart';
 
-
-String _boughtyear = null;
-String _boughtmonth = null;
 String _boughtproduct = null;
 List<DropdownMenuItem<String>> dropboughtyear = [];
 List<DropdownMenuItem<String>> dropboughtmonth = [];
 List<DropdownMenuItem<String>> dropproductkind = [];
 
-
-var _curUserDocument;
-FirebaseUser _currentUser;
-String _curUID;
 
 
 class ExpenseListPage extends StatefulWidget {
@@ -25,41 +19,8 @@ class ExpenseListPage extends StatefulWidget {
 class _ExpenseListPageState extends State<ExpenseListPage> {
 
 
-  var _recordinfo;
-
-
-
-
-
-  Future<FirebaseUser> _getUID() async {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    FirebaseUser currentUsersemi = await _auth.currentUser();
-    _curUID = currentUsersemi.uid.toString();
-
-    _curUserDocument = await Firestore.instance.collection('information').document(_curUID).get();
-    _recordinfo = information.fromSnapshot(_curUserDocument);
-    return currentUsersemi;
-  }
-
-
   void loadData() {
-    dropboughtyear = [];
-    dropboughtmonth = [];
     dropproductkind = [];
-
-    for (int i = 2019; i >= 1970; i--) {
-      dropboughtyear.add(new DropdownMenuItem<String>(
-        child: Text(i.toString()),
-        value: i.toString(),
-      ));
-    }
-
-    for (int j = 1; j <= 12; j++) {
-      dropboughtmonth.add(new DropdownMenuItem<String>(
-        child: Text(j.toString()),
-        value: j.toString(),
-      ));
-    }
 
     dropproductkind.add(DropdownMenuItem<String>(
       child: Text('사료'),
@@ -92,41 +53,20 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    _getUID();
+  void initState() {
+
+
     loadData();
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
 
     return Stack(children: <Widget>[
       Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Text('구매 년월'),
-              DropdownButton(
-                value: _boughtyear,
-                items: dropboughtyear,
-                hint: Text('년도'),
-                onChanged: (value1) {
-                  setState(() {
-                    _boughtyear = value1;
-                  });
-                },
-              ),
-              DropdownButton(
-                iconSize: 30,
-                value: _boughtmonth,
-                items: dropboughtmonth,
-                hint: Text('월'),
-                onChanged: (value2) {
-                  setState(() {
-                    _boughtmonth = value2;
-                  });
-                },
-              ),
-            ],
-          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
@@ -155,10 +95,10 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
           ),
           Expanded(
             child: StreamBuilder(
-                stream: Firestore.instance.collection('information').document(_curUID)
+                stream: Firestore.instance.collection('information').document(curUID)
                     .collection('nyanggaebu').where('isbought',isEqualTo: true).snapshots(),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
-                  if(snapshot.hasData != null){
+                  if(snapshot.data != null){
                     return ListView.builder(
                         shrinkWrap: true,
                         itemCount: snapshot.data.documents.length,
@@ -166,7 +106,10 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
                       );
 
                   }else{
-                    return CircularProgressIndicator();
+                    return Container(
+                        child: Center(
+                          child: Text("Loading.."),
+                        ));
                   }
                 }),
           ),

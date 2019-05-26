@@ -31,3 +31,5 @@ flutter:
   assets:
   - assets/catfoot.png
   - assets/examplemanda.jpg
+  - assets/femaleimage.jpg
+  - assets/maleimage.jpg

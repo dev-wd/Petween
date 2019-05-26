@@ -9,7 +9,7 @@ import 'package:petween/mainpages/qna.dart';
 
 
 GlobalKey<ScaffoldState> _key = new GlobalKey<ScaffoldState>();
-enum TabItem { info, event, home, yasick, schedule }
+enum TabItem { nyangsta, home, add, nyanggaebu, qna }
 
 class TabHelper {
   static Widget item({int index}) {
@@ -31,15 +31,15 @@ class TabHelper {
 
   static String description(TabItem tabItem) {
     switch (tabItem) {
-      case TabItem.home:
+      case TabItem.add:
         return '추가';
-      case TabItem.info:
+      case TabItem.nyangsta:
         return '냥스타';
-      case TabItem.event:
+      case TabItem.home:
         return '홈';
-      case TabItem.yasick:
+      case TabItem.nyanggaebu:
         return '냥계부';
-      case TabItem.schedule:
+      case TabItem.qna:
         return 'Q&A';
     }
 
@@ -50,15 +50,15 @@ class TabHelper {
     double _iconSize = 35;
 
     switch (tabItem) {
-      case TabItem.home:
+      case TabItem.add:
         return Icon(Icons.add_circle_outline);
-      case TabItem.info:
+      case TabItem.nyangsta:
         return Icon(Icons.camera_enhance);
-      case TabItem.event:
+      case TabItem.home:
         return Icon(Icons.home);
-      case TabItem.yasick:
+      case TabItem.nyanggaebu:
         return Icon(Icons.calendar_today);
-      case TabItem.schedule:
+      case TabItem.qna:
         return Icon(Icons.chat_bubble_outline);
     }
     return Icon(Icons.add_circle_outline);
@@ -83,11 +83,11 @@ class _TabPageState extends State<TabPage> {
         currentIndex: _selectedTab,
         type: BottomNavigationBarType.fixed,
         items: [
+          _buildItem(tabItem: TabItem.add),
+          _buildItem(tabItem: TabItem.nyangsta),
           _buildItem(tabItem: TabItem.home),
-          _buildItem(tabItem: TabItem.info),
-          _buildItem(tabItem: TabItem.event),
-          _buildItem(tabItem: TabItem.yasick),
-          _buildItem(tabItem: TabItem.schedule),
+          _buildItem(tabItem: TabItem.nyanggaebu),
+          _buildItem(tabItem: TabItem.qna),
         ],
         fixedColor: Color(0xFFFF5A5A),
         onTap: (index) {

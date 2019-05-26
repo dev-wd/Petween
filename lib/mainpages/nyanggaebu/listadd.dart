@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-
-
+import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:petween/mainpages/nyanggaebu/nyanggaebu.dart';
 String _productkindadd = null;
 List<DropdownMenuItem<String>> dropproductkindadd = [];
 
@@ -67,13 +69,24 @@ class _ListAddPageState extends State<ListAddPage>{
               size: 40,
             ),
             onPressed: () {
-              Navigator.of(context).pushReplacementNamed('/tab');
+              Navigator.of(context).pushNamed('/tab');
             },
           ),
           actions: <Widget>[
             GestureDetector(
               onTap: () {
-                setState(() {  });
+                setState(() {
+
+                  Firestore.instance.collection('information').document(curUID)
+                      .collection('nyanggaebu').add({
+                    "isbought": _IsBought == 1 ? true: false,
+                    "productkind":  _productkindadd == null ? 'no kind':  _productkindadd,
+                    "productname": productname == null ? 'no name': productname,
+                    "productprice": productprice  == null ? 'no price': productprice,
+                  }).then((result) => {
+                  Navigator.of(context).pushNamed('/tab')
+                  }).catchError((err) =>print(err));
+                });
               },
               child: Container(
                 child: Padding(

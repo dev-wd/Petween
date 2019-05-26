@@ -1,7 +1,22 @@
 import 'package:flutter/material.dart';
 import 'bucketlist.dart';
 import 'expenselist.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
+var curUserDocument;
+FirebaseUser currentUser;
+String curUID;
+
+
+Future<FirebaseUser> getUIDfornyanggaebu() async {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  FirebaseUser currentUsersemi = await _auth.currentUser();
+  curUID = currentUsersemi.uid.toString();
+
+  curUserDocument = await Firestore.instance.collection('information').document(curUID).get();
+  return currentUsersemi;
+}
 
 
 class NyangGaeBuPage extends StatefulWidget {
@@ -16,6 +31,7 @@ class _NyangGaeBuPageState extends State<NyangGaeBuPage>
   void initState() {
     super.initState();
     _tabController = new TabController(vsync: this, initialIndex: 0, length: 2);
+    getUIDfornyanggaebu();
   }
 
   @override
