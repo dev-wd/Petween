@@ -20,6 +20,9 @@ class db {
   String uid;
   String nickname;  //고양이 닉네임
   String petname;//고양이이름
+  String image; //고양이 사진
+  String title; //QNA 제목
+  String info; //QNA 내용
   final DocumentReference reference;
 
   db.fromMap(Map<String, dynamic> map, String docID, {this.reference})
@@ -37,7 +40,10 @@ class db {
         kind = map['kind'],
         nickname = map['nickname'],
         petname = map['petname'],
-        uid = map['uid'];
+        uid = map['uid'],
+        image = map['image'],
+        title = map['title'],
+        info = map['info'];
   db.fromSnapshot(DocumentSnapshot snapshot)
     :this.fromMap(snapshot.data, snapshot.documentID, reference: snapshot.reference);
 

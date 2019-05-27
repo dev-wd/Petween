@@ -1,7 +1,12 @@
+import 'dart:io';
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'Package:petween/model/db.dart' as db;
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'profile_edit.dart';
 
 var _nameController = TextEditingController();
@@ -32,6 +37,36 @@ class AddPetPage extends StatefulWidget {
 
 class _AddPetPageState extends State<AddPetPage>{
   db.db record;
+  File _image;
+  String imageUrl = 'https://screenshotlayer.com/images/assets/placeholder.png';
+
+
+  Future getImage() async {
+    print("실행");
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _image = image;
+    });
+    print(_image);
+    final String rand =
+        "${new Random().nextInt(10000)}${DateTime.now().millisecond}";
+
+    final StorageReference firebaseStorageRef =
+    FirebaseStorage.instance.ref().child('product').child('myimage.jpg');
+    final StorageUploadTask task =
+    firebaseStorageRef.putFile(_image);
+
+    await (await task.onComplete)
+        .ref
+        .getDownloadURL()
+        .then((dynamic url) {
+      setState(() {
+        imageUrl= url;
+        _image = null;
+      });}
+    );
+  }
   //_ProfileCreatePageState({this.record});
 
   void loadData(){
@@ -103,6 +138,7 @@ class _AddPetPageState extends State<AddPetPage>{
                     'meetday' : _meetday,
                     'nickname' : _nickController.text,
                     'email' : db.userEmail,
+                    'image': imageUrl,
                   });
               _nameController.clear();
               _nickController.clear();
@@ -122,15 +158,29 @@ class _AddPetPageState extends State<AddPetPage>{
           padding:
           EdgeInsets.symmetric(horizontal: 24.0),
           children: <Widget>[
+            FlatButton(
+            onPressed:(){
+              Navigator.pop(context);
+              Navigator.of(context).pushNamed('/qna');
+            },
+            child: Text("QNA"),
+            ),
+            FlatButton(
+              onPressed:(){
+                Navigator.pop(context);
+                Navigator.of(context).pushNamed('/todo');
+              },
+              child: Text("todo"),
+            ),
             SizedBox(height:10.0),
             Column(
               children: <Widget>[
-                //Image.network()
-                SizedBox(height: 16.0,)
+                Image.network(imageUrl, fit: BoxFit.fill),
+                SizedBox(height: 16.0),
               ],
             ),
             FlatButton(
-              //onPressed: ,
+              onPressed:(){getImage();},
               child: Icon(Icons.add_a_photo),
             ),
             Column(

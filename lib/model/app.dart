@@ -12,6 +12,9 @@ import 'package:petween/mainpages/nyangsta.dart';
 import 'package:petween/mainpages/qna.dart';
 import 'package:petween/pet_create_and_show/addpet.dart';
 import 'package:petween/pet_create_and_show/profile_edit.dart';
+import 'package:petween/mainpages/todo.dart';
+import 'package:petween/mainpages/addtodo.dart';
+
 class PetweenApp extends StatelessWidget {
 
   @override
@@ -34,6 +37,8 @@ class PetweenApp extends StatelessWidget {
         '/qna' : (BuildContext context) => QNAPage(),
         '/nyangsta' : (BuildContext context) => NyangStaPage(),
         '/edit' : (BuildContext context) => ProfileEditPage(),
+        '/todo' : (BuildContext context) => TodoPage(),
+        '/addtodo' : (BuildContext context) => AddTodoPage(),
       },
     );
   }
