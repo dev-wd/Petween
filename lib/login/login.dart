@@ -102,8 +102,16 @@ class _LoginPageState extends State<LoginPage>{
                               child: Text('Log in'),
                               onPressed: () async{
                                 if (_formKey.currentState.validate()){
-                                  _signInWithEmailAndPassword();
-                                  if (!_success){
+                                  if (_success){
+                                    _signInWithEmailAndPassword().then((FirebaseUser user){
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                          builder: (BuildContext context) => ProfileCreatePage()))
+                                          .catchError((e) => print(e));
+                                    });
+                                  }
+
+                                  else{
                                     return showDialog(
                                       context: context,
                                       builder: (context) {
@@ -143,8 +151,7 @@ class _LoginPageState extends State<LoginPage>{
                                   .push(MaterialPageRoute(
                                   builder: (BuildContext context) => ProfileCreatePage()))
                                   .catchError((e) => print(e));
-                            },
-                            );
+                            });
                           },
 
                           child: Container(
@@ -184,9 +191,11 @@ class _LoginPageState extends State<LoginPage>{
     db.user = user;
     db.userUID = user.uid;
     db.userEmail = user.email;
+
+    return user;
   }
 
-  Future<dynamic> _signInWithEmailAndPassword() async {
+  Future<FirebaseUser> _signInWithEmailAndPassword() async {
     _userEmail = _emailController.text;
     _password = _passwordController.text;
 
@@ -195,12 +204,12 @@ class _LoginPageState extends State<LoginPage>{
         password: _password
     );
 
+    db.user = user;
+    db.userUID = user.uid;
+    db.userEmail = user.email;
 
     if (user != null){
       _success = true;
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (BuildContext context) => ProfileCreatePage()))
-          .catchError((e) => print(e));
     }
     else{
       _success = false;
@@ -214,5 +223,6 @@ class _LoginPageState extends State<LoginPage>{
       _success = true;
     }
 
+    return user;
   }
 }

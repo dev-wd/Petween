@@ -103,6 +103,7 @@ class _AddPetPageState extends State<AddPetPage>{
                     'meetday' : _meetday,
                     'nickname' : _nickController.text,
                     'email' : db.userEmail,
+                    'uid' : db.userUID,
                   });
               _nameController.clear();
               _nickController.clear();

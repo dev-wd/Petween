@@ -20,7 +20,7 @@ class _NyangStaPageState extends State<NyangStaPage>{
                 color: Color(0xFF5D4037),
               ),
               onPressed: (){
-                Navigator.of(context).pushNamed('/edit');
+                Navigator.of(context).pushNamed('/addstar');
               },
             ),
 

@@ -1,35 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:petween/model/db.dart';
+
+
 
 class ProfileCreatePage extends StatefulWidget {
   @override
   _ProfileCreatePageState createState() => new _ProfileCreatePageState();
 }
 
-Widget _buildBody(
-    BuildContext context) {
 
-  return StreamBuilder<QuerySnapshot>(
-    stream:  Firestore.instance
-        .collection('pet').snapshots(),
-    builder: (context, snapshot) {
-      if (!snapshot.hasData) return LinearProgressIndicator();
-
-      return GridView.builder(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        gridDelegate:
-        SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-        itemCount: snapshot.data.documents.length,
-        padding: EdgeInsets.all(2.0),
-        itemBuilder: (BuildContext context, int index) {
-          return _buildCard(context, snapshot.data.documents[index]);
-        },
-      );
-    },
-  );
-}
 
 Widget _buildCard(BuildContext context, DocumentSnapshot data) {
   final record = db.fromSnapshot(data);
@@ -75,9 +56,18 @@ Widget _buildCard(BuildContext context, DocumentSnapshot data) {
 
 class _ProfileCreatePageState extends State<ProfileCreatePage>{
 
+
+
+  FirebaseUser currentUser;
+  void getUID() async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    currentUser = await _auth.currentUser();
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
+    getUID();
     return Scaffold(
         appBar: AppBar(
             title:  Text('P E T W E E N', style: TextStyle(color: Colors.black),),
@@ -97,7 +87,25 @@ class _ProfileCreatePageState extends State<ProfileCreatePage>{
                   ),
                 ],
               ),
-              _buildBody(context),
+              StreamBuilder<QuerySnapshot>(
+                stream:  Firestore.instance
+                    .collection('pet').where('uid', isEqualTo: currentUser).snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) return LinearProgressIndicator();
+
+                  return GridView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    gridDelegate:
+                    SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+                    itemCount: snapshot.data.documents.length,
+                    padding: EdgeInsets.all(2.0),
+                    itemBuilder: (BuildContext context, int index) {
+                      return _buildCard(context, snapshot.data.documents[index]);
+                    },
+                  );
+                },
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[

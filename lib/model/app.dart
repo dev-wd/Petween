@@ -8,11 +8,13 @@ import 'package:petween/mainpages/home.dart';
 import 'package:petween/tab.dart';
 import 'package:petween/mainpages/addboard.dart';
 import 'package:petween/mainpages/nyanggaebu/nyanggaebu.dart';
-import 'package:petween/mainpages/nyangsta.dart';
+import 'package:petween/mainpages/nyangsta/nyangsta.dart';
 import 'package:petween/mainpages/qna.dart';
 import 'package:petween/pet_create_and_show/addpet.dart';
 import 'package:petween/pet_create_and_show/profile_edit.dart';
 import 'package:petween/mainpages/nyanggaebu/listadd.dart';
+import 'package:petween/mainpages/nyangsta/addnyangsta.dart';
+
 class PetweenApp extends StatelessWidget {
 
   @override
@@ -34,7 +36,7 @@ class PetweenApp extends StatelessWidget {
         '/nyangsta' : (BuildContext context) => NyangStaPage(),
         '/edit' : (BuildContext context) => ProfileEditPage(),
         '/listadd' : (BuildContext context) => ListAddPage(),
-
+        '/addstar' : (BuildContext context) => AddNyangStaPage(),
       },
     );
   }

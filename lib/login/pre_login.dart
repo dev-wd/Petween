@@ -30,11 +30,11 @@ class _PreloginPageState extends State<PreloginPage>{
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            SizedBox(height: 300.0,),
+            SizedBox.fromSize(size: MediaQuery.of(context).size / 4.0),
 
             Image.asset('assets/catfoot.png', width: 300, height: 200,),
 
-            SizedBox(height: 5.0,),
+            SizedBox.fromSize(size: MediaQuery.of(context).size / 90),
 
             Text(
               'P E T W E E N',

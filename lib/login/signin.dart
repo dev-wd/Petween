@@ -204,6 +204,7 @@ class _SignInPageState extends State<SignInPage> with WidgetsBindingObserver {
       Map<String, dynamic> user = {
         'userName': _userNameController.text,
         'email' : _emailController.text,
+        'docuemntID' : db.userUID,
       };
       Firestore.instance.collection('information').document(db.userUID).setData(user);
       Navigator.of(context).push(MaterialPageRoute(
