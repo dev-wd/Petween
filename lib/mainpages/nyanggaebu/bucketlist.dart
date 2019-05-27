@@ -1,4 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:petween/model/db.dart';
+import 'package:petween/mainpages/nyanggaebu/nyanggaebu.dart';
+
+
+
+
+
+
+
+
+
+Widget _buildTile(BuildContext context, DocumentSnapshot data){
+  final record = nyanggaebu.fromSnapshot(data);
+  return Column(
+    children: <Widget>[
+      ListTile(
+        title:Row(
+          children: <Widget>[
+            Text(record.productkind),
+            Text(record.productname),
+            Text(record.productprice),
+
+          ],
+        ),
+
+
+      ),
+      Divider(
+        height: 10.0,
+      ),],
+  );
+
+}
+
 
 class BucketListPage extends StatefulWidget {
   @override
@@ -6,16 +42,36 @@ class BucketListPage extends StatefulWidget {
 }
 
 class _BucketListPageState extends State<BucketListPage> {
+
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Stack(children: <Widget>[
-      Center(
-        child: IconButton(
-            icon: Icon(Icons.thumb_up),
-            onPressed: () {
-              Navigator.of(context).pushNamed('/setting');
-            }),
+      Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Expanded(
+            child: StreamBuilder(
+                stream: Firestore.instance.collection('information').document(curUID)
+                    .collection('nyanggaebu').where('isbought',isEqualTo: false).snapshots(),
+                builder: (BuildContext context, AsyncSnapshot snapshot) {
+                  if(snapshot.data != null){
+                    return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: snapshot.data.documents.length,
+                        itemBuilder: (context, i) => _buildTile(context, snapshot.data.documents[i])
+                    );
+
+                  }else{
+                    return Container(
+                        child: Center(
+                          child: Text("Loading.."),
+                        ));
+                  }
+                }),
+          ),
+        ],
       ),
 
       Column(
@@ -36,7 +92,6 @@ class _BucketListPageState extends State<BucketListPage> {
           ),
         ],
       ),
-
     ]);
   }
 }
