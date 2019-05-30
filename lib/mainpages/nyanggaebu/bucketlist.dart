@@ -5,9 +5,6 @@ import 'package:petween/model/db.dart';
 import 'package:petween/mainpages/nyanggaebu/nyanggaebu.dart';
 
 
-<<<<<<< HEAD
-
-
 
 int totalPrice;
 
@@ -29,12 +26,6 @@ Color _kindcolor(String kindc){
     return Colors.orange;
 }
 
-
-
-
-
-=======
->>>>>>> origin/bohee
 Widget _buildTile(BuildContext context, DocumentSnapshot data){
   final record = nyanggaebu.fromSnapshot(data);
   return Column(
