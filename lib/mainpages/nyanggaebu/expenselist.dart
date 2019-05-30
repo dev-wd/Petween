@@ -4,13 +4,30 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:petween/model/db.dart';
 import 'package:petween/mainpages/nyanggaebu/nyanggaebu.dart';
 
-String _boughtproduct = null;
+String _boughtproduct = '전체';
 List<DropdownMenuItem<String>> dropboughtyear = [];
 List<DropdownMenuItem<String>> dropboughtmonth = [];
 List<DropdownMenuItem<String>> dropproductkind = [];
 
+int totalPrice;
 
+Color _kindcolor(String kindc){
 
+  if(kindc == "간식")
+    return Colors.blueGrey;
+  else if(kindc == "장난감")
+    return Colors.deepPurpleAccent;
+  else if(kindc == "사료")
+    return Colors.redAccent;
+  else if(kindc == "캣타워")
+    return Colors.amber;
+  else if(kindc == "스크래쳐")
+    return Colors.teal;
+  else if(kindc == "이동장")
+    return Colors.indigo;
+  else if(kindc == "모래")
+    return Colors.orange;
+}
 class ExpenseListPage extends StatefulWidget {
   @override
   _ExpenseListPageState createState() => new _ExpenseListPageState();
@@ -21,6 +38,10 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
 
   void loadData() {
     dropproductkind = [];
+    dropproductkind.add(DropdownMenuItem<String>(
+      child: Text('전체'),
+      value: "전체",
+    ));
 
     dropproductkind.add(DropdownMenuItem<String>(
       child: Text('사료'),
@@ -57,11 +78,14 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
 
 
     loadData();
+    totalPrice = 0;
   }
 
 
   @override
   Widget build(BuildContext context) {
+
+
 
     return Stack(children: <Widget>[
       Column(
@@ -95,14 +119,43 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
           ),
           Expanded(
             child: StreamBuilder(
-                stream: Firestore.instance.collection('information').document(curUID)
-                    .collection('nyanggaebu').where('isbought',isEqualTo: true).snapshots(),
+                stream: _boughtproduct == '전체' ? Firestore.instance.collection('information').document(curUID)
+                    .collection('nyanggaebu').where('isbought',isEqualTo: true).snapshots():
+                Firestore.instance.collection('information').document(curUID)
+                    .collection('nyanggaebu').where('isbought',isEqualTo: true).where('productkind',isEqualTo: _boughtproduct).snapshots(),
                 builder: (BuildContext context, AsyncSnapshot snapshot) {
                   if(snapshot.data != null){
+
                     return ListView.builder(
                         shrinkWrap: true,
                         itemCount: snapshot.data.documents.length,
-                        itemBuilder: (context, i) => _buildTile(context, snapshot.data.documents[i])
+                        itemBuilder: (context, i) {
+                          final recordf = nyanggaebu.fromSnapshot(snapshot.data.documents[i]);
+                          return Dismissible(
+                            key: Key(recordf.productname+recordf.productprice),
+                            // We also need to provide a function that tells our app
+                            // what to do after an item has been swiped away.
+                            onDismissed: (direction) {
+                              // Remove the item from our data source.
+                              setState(() {
+
+
+
+                                Firestore.instance.collection('information').document(curUID)
+                                    .collection('nyanggaebu').document(recordf.productname+recordf.productprice).delete();
+
+
+                                // remove database nyanggaebu data
+                              });
+
+
+
+                            },
+                            // Show a red background as the item is swiped away
+                            background: Container(color: Colors.red),
+                            child:  _buildTile(context, snapshot.data.documents[i])
+                          );
+                        }
                       );
 
                   }else{
@@ -131,7 +184,7 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
                       color: Color(0xFFFF5A5A),
                     ),
                   ),
-                  Text('10000 원'),
+                  Text(totalPrice.toString()+' 원'),
                 ],
               ),
             ),
@@ -144,14 +197,27 @@ class _ExpenseListPageState extends State<ExpenseListPage> {
 
 Widget _buildTile(BuildContext context, DocumentSnapshot data){
   final record = nyanggaebu.fromSnapshot(data);
+  totalPrice = totalPrice + int.parse(record.productprice)~/2;
+
+
   return Column(
     children: <Widget>[
     ListTile(
       title:Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Text(record.productkind),
-          Text(record.productname),
-          Text(record.productprice),
+          Row(
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(right:16.0),
+                child: Text(record.productkind,style: TextStyle(color: _kindcolor(record.productkind),fontSize: 10,fontWeight: FontWeight.bold)),
+              ),
+              Text(record.productname),
+            ],
+          ),
+
+          Text(record.productprice+" 원",style: TextStyle(color: Colors.grey,fontSize: 15),),
+
 
         ],
       ),

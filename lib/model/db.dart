@@ -54,7 +54,8 @@ class db {
       :this.fromMap(snapshot.data, snapshot.documentID, reference: snapshot.reference);
 
   @override
-  String toString() => "db<$userName:$email:$gender:$kind:$nickname:$petname:$uid>";
+  String toString() => "db<$birthday:$birthmonth:$birthyear"
+      ":$meetyear:$meetmonth:$meetday:$gender:$kind:$nickname:$petname:$uid>";
 
 }
 
