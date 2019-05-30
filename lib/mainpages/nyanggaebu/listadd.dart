@@ -3,21 +3,22 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:petween/mainpages/nyanggaebu/nyanggaebu.dart';
+import 'package:petween/tab.dart';
+
 String _productkindadd = null;
 List<DropdownMenuItem<String>> dropproductkindadd = [];
-
 
 class ListAddPage extends StatefulWidget {
   @override
   _ListAddPageState createState() => new _ListAddPageState();
 }
 
-class _ListAddPageState extends State<ListAddPage>{
+class _ListAddPageState extends State<ListAddPage> {
   String productname;
   String productprice;
   int _IsBought = 0;
 
-  void loadData(){
+  void loadData() {
     dropproductkindadd = [];
 
     dropproductkindadd.add(DropdownMenuItem<String>(
@@ -48,13 +49,7 @@ class _ListAddPageState extends State<ListAddPage>{
       child: Text('모래'),
       value: "모래",
     ));
-
-
-
-
-
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -62,40 +57,53 @@ class _ListAddPageState extends State<ListAddPage>{
     return Scaffold(
         appBar: AppBar(
           title: Text('냥계부 추가'),
-          leading: IconButton(
-            icon: Icon(
-              Icons.chevron_left,
-              color: Colors.white,
-              size: 40,
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 16.0, top: 16),
+            child: GestureDetector(
+              child: Text(
+                '취소',
+                style: TextStyle(color: Colors.white),
+              ),
+              onTap: () {
+                Navigator.of(context).pushNamed('/tab');
+              },
             ),
-            onPressed: () {
-              Navigator.of(context).pushNamed('/tab');
-            },
           ),
           actions: <Widget>[
             GestureDetector(
               onTap: () {
-                setState(() {
-
-                  Firestore.instance.collection('information').document(curUID)
-                      .collection('nyanggaebu').add({
-                    "isbought": _IsBought == 1 ? true: false,
-                    "productkind":  _productkindadd == null ? 'no kind':  _productkindadd,
-                    "productname": productname == null ? 'no name': productname,
-                    "productprice": productprice  == null ? 'no price': productprice,
-                  }).then((result) => {
-                  Navigator.of(context).pushNamed('/tab')
-                  }).catchError((err) =>print(err));
-                });
+                setState(
+                  () {
+                    Map<String, dynamic> _product = {
+                      "isbought": _IsBought == 1 ? true : false,
+                      "productkind":
+                          _productkindadd == null ? 'no kind' : _productkindadd,
+                      "productname":
+                          productname == null ? 'no name' : productname,
+                      "productprice":
+                          productprice == null ? 'no price' : productprice,
+                    };
+                    Firestore.instance
+                        .collection('information').document(curUID).collection('nyanggaebu')
+                        .document(productname + productprice)
+                        .setData(_product)
+                        .then((result) => {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => TabPage(tabrecord)))
+                            })
+                        .catchError((err) => print(err));
+                  },
+                );
               },
               child: Container(
                 child: Padding(
-                  padding: const EdgeInsets.only(top:16.0,right: 16),
-                  child: Text('확인',style: TextStyle(color:  Color(0xFFFF5A5A))),
+                  padding: const EdgeInsets.only(top: 16.0, right: 16),
+                  child: Text('확인', style: TextStyle(color: Color(0xFFFF5A5A))),
                 ),
               ),
             )
-
           ],
           backgroundColor: Color(0xFFFFCA28),
         ),
@@ -104,15 +112,14 @@ class _ListAddPageState extends State<ListAddPage>{
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-
-              Text('구입여부',style: TextStyle(color:  Color(0xFFFF5A5A))),
+              Text('구입여부', style: TextStyle(color: Color(0xFFFF5A5A))),
               Row(
                 children: <Widget>[
                   Text('이미 구입함'),
                   Radio(
                     value: 1,
-                    groupValue:_IsBought,
-                    onChanged: (int value){
+                    groupValue: _IsBought,
+                    onChanged: (int value) {
                       setState(() {
                         _IsBought = value;
                       });
@@ -121,25 +128,27 @@ class _ListAddPageState extends State<ListAddPage>{
                   Text('구입 예정임'),
                   Radio(
                     value: 2,
-                    groupValue:_IsBought,
-                    onChanged: (int value){
+                    groupValue: _IsBought,
+                    onChanged: (int value) {
                       setState(() {
                         _IsBought = value;
                       });
                     },
                   ),
-              ],),
-              Padding(
-                padding: const EdgeInsets.only(bottom:1.0),
-                child: Text('구매 물품 종류',style: TextStyle(color:  Color(0xFFFF5A5A))),
+                ],
               ),
               Padding(
-                padding: const EdgeInsets.only(left:1.0),
+                padding: const EdgeInsets.only(bottom: 1.0),
+                child: Text('구매 물품 종류',
+                    style: TextStyle(color: Color(0xFFFF5A5A))),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 1.0),
                 child: DropdownButton(
                   value: _productkindadd,
-                  items: dropproductkindadd ,
+                  items: dropproductkindadd,
                   hint: Text('종류'),
-                  onChanged: (value){
+                  onChanged: (value) {
                     setState(() {
                       _productkindadd = value;
                     });
@@ -147,41 +156,38 @@ class _ListAddPageState extends State<ListAddPage>{
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(top:16.0),
-                child: Text('물품명',style: TextStyle(color:  Color(0xFFFF5A5A))),
+                padding: const EdgeInsets.only(top: 16.0),
+                child: Text('물품명', style: TextStyle(color: Color(0xFFFF5A5A))),
               ),
               TextField(
                 cursorColor: Color(0xFFFF5A5A),
                 decoration: InputDecoration(
                   focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color:Color(0xFFFF5A5A)),
+                    borderSide: BorderSide(color: Color(0xFFFF5A5A)),
                   ),
                 ),
-
                 onChanged: (text) {
                   productname = text;
                 },
               ),
               Padding(
-                padding: const EdgeInsets.only(top:16.0),
-                child: Text('물품 가격',style: TextStyle(color:  Color(0xFFFF5A5A))),
+                padding: const EdgeInsets.only(top: 16.0),
+                child:
+                    Text('물품 가격', style: TextStyle(color: Color(0xFFFF5A5A))),
               ),
               TextField(
                 cursorColor: Color(0xFFFF5A5A),
                 decoration: InputDecoration(
                   focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color:Color(0xFFFF5A5A)),
+                    borderSide: BorderSide(color: Color(0xFFFF5A5A)),
                   ),
                 ),
-
                 onChanged: (text) {
                   productprice = text;
                 },
               ),
-
             ],
           ),
-        )
-    );
+        ));
   }
 }

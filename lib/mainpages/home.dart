@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:petween/tab.dart';
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => new _HomePageState();
@@ -8,6 +8,11 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+    final meetday2 = DateTime(int.parse(tabrecord.meetyear),
+        int.parse(tabrecord.meetmonth), int.parse(tabrecord.meetday));
+    final date2 = DateTime.now();
+    final difference = date2.difference(meetday2).inDays;
+
     return Stack(
       children: <Widget>[
         new Container(
@@ -32,11 +37,11 @@ class _HomePageState extends State<HomePage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text("D+140",style: TextStyle(color: Colors.black,fontSize: 15),),
+                      Text("D+"+difference.toString(),style: TextStyle(color: Colors.black,fontSize: 15),),
                       Icon(Icons.favorite,color: Colors.redAccent,)
                     ],
                   ),
-                  Text("with manda" , style: TextStyle(color: Colors.black,fontSize: 15),)
+                  Text("with "+ tabrecord.petname , style: TextStyle(color: Colors.black,fontSize: 15),)
                 ],
               ),
             ),

@@ -30,7 +30,7 @@ class PetweenApp extends StatelessWidget {
         '/signin' : (BuildContext context) => SignInPage(),
         '/addpet' : (BuildContext context) => AddPetPage(),
         '/home' : (BuildContext context) => HomePage(),
-//        '/tab' : (BuildContext context) => TabPage(),
+        //'/tab' : (BuildContext context) => TabPage(),
         '/addboard' : (BuildContext context) => AddBoardPage(),
         '/nyanggaebu' : (BuildContext context) => NyangGaeBuPage(),
         '/qna' : (BuildContext context) => QNAPage(),
@@ -38,8 +38,8 @@ class PetweenApp extends StatelessWidget {
         '/edit' : (BuildContext context) => ProfileEditPage(),
         '/listadd' : (BuildContext context) => ListAddPage(),
         '/addstar' : (BuildContext context) => AddNyangStaPage(),
-        '/chat': (BuildContext context) => ChatNyangStaPage(),
-        '/search': (BuildContext context) => SearchNyangStaPage(),
+        '/chat': (BuildContext context) => ChatNyangstaPage(),
+        '/search': (BuildContext context) => SearchNyangPage(),
       },
     );
   }
