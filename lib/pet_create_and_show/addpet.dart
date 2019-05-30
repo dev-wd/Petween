@@ -1,8 +1,13 @@
+import 'dart:io';
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'Package:petween/model/db.dart' as db;
-import 'profile_edit.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:petween/model/db.dart';
 
 var _nameController = TextEditingController();
 var _nickController = TextEditingController();
@@ -32,6 +37,72 @@ class AddPetPage extends StatefulWidget {
 
 class _AddPetPageState extends State<AddPetPage>{
   db.db record;
+  File _image;
+  String imageUrl = 'https://screenshotlayer.com/images/assets/placeholder.png';
+  var _curUserDocument;
+  FirebaseUser _currentUser;
+  var _recordinfo;
+  String _curUID;
+  String _curEmail;
+
+  Future<FirebaseUser> _getUID() async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    FirebaseUser _currentUsersemi = await _auth.currentUser();
+    _curUID = _currentUsersemi.uid.toString();
+
+    _curUserDocument = await Firestore.instance
+        .collection('information')
+        .document(_curUID)
+        .get();
+    _recordinfo = information.fromSnapshot(_curUserDocument);
+    return _currentUsersemi;
+  }
+
+  @override
+  void initState() {
+    _getUID().then((val) => setState(() {
+      _currentUser = val;
+      print(_currentUser.email);
+      _curUID = _currentUser.uid;
+      _curEmail = _currentUser.email;
+      print("uid:" + _curUID);
+    }));
+  }
+
+
+
+  FirebaseUser currentUser;
+  void getUID() async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    currentUser = await _auth.currentUser();
+  }
+
+  Future getImage() async {
+    print("실행");
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _image = image;
+    });
+    print(_image);
+    final String rand =
+        "${new Random().nextInt(10000)}${DateTime.now().millisecond}";
+
+    final StorageReference firebaseStorageRef =
+    FirebaseStorage.instance.ref().child('product').child('myimage.jpg');
+    final StorageUploadTask task =
+    firebaseStorageRef.putFile(_image);
+
+    await (await task.onComplete)
+        .ref
+        .getDownloadURL()
+        .then((dynamic url) {
+      setState(() {
+        imageUrl= url;
+        _image = null;
+      });}
+    );
+  }
   //_ProfileCreatePageState({this.record});
 
   void loadData(){
@@ -71,7 +142,7 @@ class _AddPetPageState extends State<AddPetPage>{
     loadData();
     return Scaffold(
       appBar: AppBar(
-        title: Text('프로필 설정', style: TextStyle(color: Color(0xFF5D4037)),),
+        title: Text('프 로 필 설 정', style: TextStyle(color: Color(0xFF5D4037)),),
         backgroundColor: Color(0xFFFFCA28),
         leading: IconButton(
           icon: Icon(Icons.arrow_back,),
@@ -81,7 +152,7 @@ class _AddPetPageState extends State<AddPetPage>{
         ),
         actions: <Widget>[
           FlatButton(
-            child: Text('확인'),
+            child: Text('확인',style: TextStyle(color: Color(0xFFFF5A5A))),
             onPressed:(){
               String __gender = null;
               if(_gender==0)
@@ -90,8 +161,7 @@ class _AddPetPageState extends State<AddPetPage>{
                 __gender = '여';
               else
                 __gender = '중성';
-              print(gender[0]);
-              Firestore.instance.collection('pet').document(_nameController.text).setData(
+              Firestore.instance.collection('pet').document(_nameController.text+_curUID).setData(
                   { 'petname' : _nameController.text,
                     'kind' : _kindCat,
                     'birthyear' : _birthyear,
@@ -102,13 +172,14 @@ class _AddPetPageState extends State<AddPetPage>{
                     'meetmonth' : _meetmonth,
                     'meetday' : _meetday,
                     'nickname' : _nickController.text,
-                    'email' : db.userEmail,
-                    'uid' : db.userUID,
+                    'email' : _curEmail,
+                    'image': imageUrl,
+                    'uid' : _curUID,
                   });
               _nameController.clear();
               _nickController.clear();
               Navigator.pop(context);
-              Navigator.of(context).pushNamed('/setting');
+              Navigator.of(context).pushNamed('/home');
 
               /*
                 Navigator.of(context).push(MaterialPageRoute(
@@ -126,12 +197,12 @@ class _AddPetPageState extends State<AddPetPage>{
             SizedBox(height:10.0),
             Column(
               children: <Widget>[
-                //Image.network()
-                SizedBox(height: 16.0,)
+                Image.network(imageUrl, fit: BoxFit.fill),
+                SizedBox(height: 16.0),
               ],
             ),
             FlatButton(
-              //onPressed: ,
+              onPressed:(){getImage();},
               child: Icon(Icons.add_a_photo),
             ),
             Column(

@@ -56,5 +56,9 @@
 	<false/>
 	<key>REVERSED_CLIENT_ID</key>
 	<string>com.googleusercontent.apps.270225901928-g9rknfocu5h219tc5nmkt2eau4k66rac</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app requires access to the photo library.</string>
+	<key>NSCameraUsageDescription</key>
+    <string>This app requires access to the camera.</string>
 </dict>
 </plist>

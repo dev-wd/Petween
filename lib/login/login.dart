@@ -20,6 +20,7 @@ class _LoginPageState extends State<LoginPage>{
   String _userEmail;
   String _password;
   bool _success = true;
+  String error;
 
   @override
   Widget build(BuildContext context) {
@@ -110,8 +111,7 @@ class _LoginPageState extends State<LoginPage>{
                                           .catchError((e) => print(e));
                                     });
                                   }
-
-                                  else{
+                                  else if (!_success){
                                     return showDialog(
                                       context: context,
                                       builder: (context) {
@@ -199,6 +199,7 @@ class _LoginPageState extends State<LoginPage>{
     _userEmail = _emailController.text;
     _password = _passwordController.text;
 
+
     final FirebaseUser user = await _auth.signInWithEmailAndPassword(
         email: _userEmail,
         password: _password
@@ -212,15 +213,9 @@ class _LoginPageState extends State<LoginPage>{
       _success = true;
     }
     else{
+      error = "Not correct!";
       _success = false;
-    }
 
-    user.reload();
-    if (!user.isEmailVerified){
-      _success = false;
-    }
-    else{
-      _success = true;
     }
 
     return user;

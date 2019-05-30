@@ -3,27 +3,35 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:petween/model/db.dart' as db;
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 class AddNyangStaPage extends StatefulWidget {
   @override
   _AddNyangStaPageState createState() => new _AddNyangStaPageState();
 }
 
+
 class _AddNyangStaPageState extends State<AddNyangStaPage>{
 
   String uid;
-  String c_time;
-  String name;
   String url;
+  DateTime ctime = DateTime.now();
   bool _value1 = false;
-
-  void _onChanged1(bool value) => setState(() => _value1 = value);
+  bool _isCommand = false;
 
   final _contentController = TextEditingController();
 
+  void _onChanged1(bool value){
+    setState(() {
+      _value1 = value;
+      _isCommand = true;
+    });
+  }
+
   FirebaseStorage storage = FirebaseStorage.instance ;
 
-  Future getImage() async{
+  Future getImage() async {
     var image = await ImagePicker.pickImage(
         source: ImageSource.gallery);
 
@@ -31,7 +39,7 @@ class _AddNyangStaPageState extends State<AddNyangStaPage>{
       db.image = image;
     });
 
-    StorageReference ref = storage.ref().child('${db.image}.jpg');
+    StorageReference ref = storage.ref().child("nyangsta").child('/${db.image}');
     StorageUploadTask uploadTask = ref.putFile(db.image);
     String URL = await (await uploadTask.onComplete).ref.getDownloadURL();
 
@@ -40,6 +48,7 @@ class _AddNyangStaPageState extends State<AddNyangStaPage>{
       uid = db.userUID;
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -66,16 +75,26 @@ class _AddNyangStaPageState extends State<AddNyangStaPage>{
               child: GestureDetector(
                 child: Container(
                   child: Text('저장',
-                      style: TextStyle(color: Colors.white, fontSize: 16.0,
+                      style: TextStyle(color: Color(0xFFFF5A5A), fontSize: 16.0,
                           fontWeight: FontWeight.bold)),
                 ),
-//                onTap: (){
-//                    Map<String, dynamic> info = {
-//                      'uid' = uid,
-//                      'url' = url,
-//                      ''
-//                    };
-//                },
+                onTap: (){
+                    Map<String, dynamic> nyangstainfo = {
+                      'nyangImageUrl': url,
+                      'currentTime': ctime,
+                      'uid': db.userUID,
+                      'likeNum': 0,
+                      'write' : _contentController.text,
+                      'liker' :[],
+                      'isLike' : false,
+                      'chatNum' : 0,
+                      'chatUser' : [],
+                      'selfCommand' : [],
+                      'isCommand': _isCommand,
+                    };
+                    Firestore.instance.collection('nyangstar').document().setData(nyangstainfo);
+                    Navigator.of(context).pop();
+                },
               ),
             ),
           ],
@@ -83,19 +102,20 @@ class _AddNyangStaPageState extends State<AddNyangStaPage>{
         body:
         ListView(
           children: <Widget>[
-           Row(
+           Column(
              crossAxisAlignment: CrossAxisAlignment.start,
              children: <Widget>[
                Padding(
                  padding: EdgeInsets.fromLTRB(20, 40, 0, 0),
                  child: FlatButton(
-                     onPressed: getImage,
-
                      child: db.image == null ?
                      Image.asset('assets/nyangsta.png',
                        width: 150.0, height: 150.0, fit: BoxFit.scaleDown,)
                          :
-                     Image.file(db.image),
+                     Image.file(db.image, width: 150.0, height: 150.0, fit: BoxFit.scaleDown),
+                     onPressed: () {
+                       getImage();
+                     },
                  ),
                 ),
 
@@ -143,7 +163,7 @@ class _AddNyangStaPageState extends State<AddNyangStaPage>{
                       Text(
                         '댓글',
                         style: TextStyle(
-                          color: Colors.redAccent,
+                          color: Color(0xFFFF5A5A),
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -160,17 +180,16 @@ class _AddNyangStaPageState extends State<AddNyangStaPage>{
                     ],
                   ),
 
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(180, 0, 0, 0),
-                    child: Switch(
-                        value: _value1,
-                        onChanged: _onChanged1,
-                        activeColor: Colors.redAccent,
-                    ),
-                  )
-                ],
-              )
-            )
+                  SizedBox(width: 120.0),
+
+                  Switch(
+                    value: _value1,
+                    onChanged: _onChanged1,
+                    activeColor: Colors.redAccent,
+                  ),
+               ],
+              ),
+            ),
           ],
         )
     );

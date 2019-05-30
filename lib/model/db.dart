@@ -6,6 +6,7 @@ String userUID;
 String userEmail;
 FirebaseUser user;
 File image;
+String userNickName;
 
 List<String> kindCat = ['노르웨이숲고양이','데본렉스','라가머핀','리팜','랙돌','러시안블루','맹크스고양이','메인쿤','발리네즈','버만','버마즈','봄베이','시베리아고양이','샴고양이','셀커크렉스','소말리','스코티시폴드','스핑크스','싱갸퓨라','아메리칸밤테일'];
 
@@ -23,9 +24,6 @@ class db {
   String uid;
   String nickname;
   String petname;
-  String informationID;
-  String isCommand;
-  String url;
 
   final DocumentReference reference;
 
@@ -33,7 +31,6 @@ class db {
       : assert(map['petname'] != null),
         assert(map['nickname'] != null),
         assert(map['uid'] != null),
-        assert(map['informationID'] != null),
         assert(map['kind'] != null),
         assert(map['gender'] != null),
         assert(map['meetday'] != null),
@@ -52,13 +49,12 @@ class db {
         kind = map['kind'],
         nickname = map['nickname'],
         petname = map['petname'],
-        uid = map['uid'],
-        informationID = map['informationID'];
+        uid = map['uid'];
   db.fromSnapshot(DocumentSnapshot snapshot)
       :this.fromMap(snapshot.data, snapshot.documentID, reference: snapshot.reference);
 
   @override
-  String toString() => "db<$userName:$email:$gender:$kind:$nickname:$petname:$uid:$informationID:$isCommand:$url>";
+  String toString() => "db<$userName:$email:$gender:$kind:$nickname:$petname:$uid>";
 
 }
 
@@ -103,4 +99,43 @@ class nyanggaebu {
   @override
   String toString() => "nyanggaebu<$productkind:$productname:$productprice:$isbought>";
 
+}
+
+class nyangsta {
+  bool isCommand;
+  String nyangImageUrl;
+  Timestamp curruentTime;
+  bool isLike;
+  int likeNum;
+  String write;
+  List<dynamic> liker;
+  String uid;
+  List<dynamic> selfCommand;
+  int chatNum;
+  List<dynamic> chatUser;
+  String documentID;
+
+  final DocumentReference reference;
+
+  nyangsta.fromMap(Map<String, dynamic> map, String docID, {this.reference})
+      : assert(map['nyangImageUrl'] != null),
+        isCommand = map['isCommand'],
+        nyangImageUrl = map['nyangImageUrl'],
+        curruentTime = map['currentTime'],
+        write = map['write'],
+        likeNum = map['likeNum'],
+        liker = map['liker'],
+        isLike = map['isLike'],
+        uid = map['uid'],
+        chatUser = map['chatUser'],
+        chatNum = map['chatNum'],
+        selfCommand = map['selfCommand'],
+        documentID = docID;
+
+
+  nyangsta.fromSnapshot(DocumentSnapshot snapshot)
+      :this.fromMap(snapshot.data, snapshot.documentID, reference: snapshot.reference);
+
+  @override
+  String toString() => "nyangsta<$isCommand:$write:$nyangImageUrl:$curruentTime:$liker:$likeNum:$isLike:$uid:$chatUser:$selfCommand:$chatNum>";
 }

@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:petween/model/db.dart';
-
-
-
+import 'package:petween/tab.dart';
 class ProfileCreatePage extends StatefulWidget {
   @override
   _ProfileCreatePageState createState() => new _ProfileCreatePageState();
@@ -37,78 +35,80 @@ Widget _buildCard(BuildContext context, DocumentSnapshot data) {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.of(context).pushNamed('/tab');
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => TabPage(record)));
                 },
                 child: Container(
                   child: Container(
                       child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(right: 24.0),
-                        child: Row(
-                          children: <Widget>[
-                            Text(
-                              record.petname + " ",
-                              style: TextStyle(fontSize: 20),
-                            ),
-                            record.gender == "man"
-                                ? Text('M',
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.only(right: 24.0),
+                            child: Row(
+                              children: <Widget>[
+                                Text(
+                                  record.petname + " ",
+                                  style: TextStyle(fontSize: 20),
+                                ),
+                                record.gender == "man"
+                                    ? Text('M',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 10,
                                         color: Colors.lightBlue))
-                                : Text(
-                                    'M',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.redAccent,
-                                        fontSize: 10),
-                                  )
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 24.0, top: 24),
-                        child: Row(
-                          children: <Widget>[
-                            Text(
-                              record.kind,
-                              style: TextStyle(
-                                  fontSize: 8, color: Colors.blueGrey),
+                                    : Text(
+                                  'M',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.redAccent,
+                                      fontSize: 10),
+                                )
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 24.0),
-                        child: Row(
-                          children: <Widget>[
-                            Text(
-                              record.birthyear,
-                              style: TextStyle(fontSize: 8, color: Colors.grey),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 24.0, top: 24),
+                            child: Row(
+                              children: <Widget>[
+                                Text(
+                                  record.kind,
+                                  style: TextStyle(
+                                      fontSize: 8, color: Colors.blueGrey),
+                                ),
+                              ],
                             ),
-                            Text(
-                              '.',
-                              style: TextStyle(fontSize: 8, color: Colors.grey),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(right: 24.0),
+                            child: Row(
+                              children: <Widget>[
+                                Text(
+                                  record.birthyear,
+                                  style: TextStyle(fontSize: 8, color: Colors.grey),
+                                ),
+                                Text(
+                                  '.',
+                                  style: TextStyle(fontSize: 8, color: Colors.grey),
+                                ),
+                                Text(
+                                  record.birthmonth,
+                                  style: TextStyle(fontSize: 8, color: Colors.grey),
+                                ),
+                                Text(
+                                  '.',
+                                  style: TextStyle(fontSize: 8, color: Colors.grey),
+                                ),
+                                Text(
+                                  record.birthday,
+                                  style: TextStyle(fontSize: 8, color: Colors.grey),
+                                ),
+                              ],
                             ),
-                            Text(
-                              record.birthmonth,
-                              style: TextStyle(fontSize: 8, color: Colors.grey),
-                            ),
-                            Text(
-                              '.',
-                              style: TextStyle(fontSize: 8, color: Colors.grey),
-                            ),
-                            Text(
-                              record.birthday,
-                              style: TextStyle(fontSize: 8, color: Colors.grey),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  )),
+                          ),
+                        ],
+                      )),
                 ),
               ),
             ],
@@ -142,18 +142,9 @@ class _ProfileCreatePageState extends State<ProfileCreatePage> {
   @override
   void initState() {
     _getUID().then((val) => setState(() {
-          _currentUser = val;
-        }));
+      _currentUser = val;
+    }));
   }
-
-
-
-  FirebaseUser currentUser;
-  void getUID() async {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    currentUser = await _auth.currentUser();
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -177,8 +168,8 @@ class _ProfileCreatePageState extends State<ProfileCreatePage> {
                   if (snapshot.data == null)
                     return Container(
                         child: Center(
-                      child: Text("Loading.."),
-                    ));
+                          child: Text("Loading.."),
+                        ));
                   else {
                     return GridView.builder(
                       scrollDirection: Axis.vertical,

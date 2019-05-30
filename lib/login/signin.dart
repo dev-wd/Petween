@@ -47,7 +47,7 @@ class _SignInPageState extends State<SignInPage> with WidgetsBindingObserver {
                   Container(
                     child: const Text('W E L C O M E   T O   P E T W E E N !',
                       style: TextStyle(fontWeight: FontWeight.bold,
-                          fontSize: 18.0, color: Colors.black),),
+                          fontSize: 15.0, color: Colors.black),),
                     padding: const EdgeInsets.all(10),
                     alignment: Alignment.center,
                   ),
@@ -196,6 +196,7 @@ class _SignInPageState extends State<SignInPage> with WidgetsBindingObserver {
   }
 
   void register() async {
+
     final FirebaseUser cuser = await _auth.createUserWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
@@ -204,7 +205,7 @@ class _SignInPageState extends State<SignInPage> with WidgetsBindingObserver {
       Map<String, dynamic> user = {
         'userName': _userNameController.text,
         'email' : _emailController.text,
-        'docuemntID' : db.userUID,
+        'docuemntID' : cuser.uid.toString(),
       };
       Firestore.instance.collection('information').document(cuser.uid).setData(user);
       Navigator.of(context).push(MaterialPageRoute(

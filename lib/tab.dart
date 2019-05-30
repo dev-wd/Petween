@@ -7,6 +7,8 @@ import 'package:petween/mainpages/nyangsta/nyangsta.dart';
 import 'package:petween/mainpages/qna.dart';
 
 
+var tabrecord;
+
 
 GlobalKey<ScaffoldState> _key = new GlobalKey<ScaffoldState>();
 enum TabItem { nyangsta, home, add, nyanggaebu, qna }
@@ -66,36 +68,50 @@ class TabHelper {
 }
 
 class TabPage extends StatefulWidget {
+
+  var _record;
+
+  TabPage(this._record);
+
+
+
+
   @override
-  _TabPageState createState() => _TabPageState();
+  _TabPageState createState() => _TabPageState(this._record);
 }
 
 class _TabPageState extends State<TabPage> {
+
+
+  var _record;
+  _TabPageState(this._record);
+
   int _selectedTab = 2;
 
   @override
   Widget build(BuildContext context) {
+    tabrecord = _record;
     return Scaffold(
       key: _key,
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(canvasColor:Color(0xFFFFDF7E)),
         child:BottomNavigationBar(
-        currentIndex: _selectedTab,
-        type: BottomNavigationBarType.fixed,
-        items: [
-          _buildItem(tabItem: TabItem.add),
-          _buildItem(tabItem: TabItem.nyangsta),
-          _buildItem(tabItem: TabItem.home),
-          _buildItem(tabItem: TabItem.nyanggaebu),
-          _buildItem(tabItem: TabItem.qna),
-        ],
-        fixedColor: Color(0xFFFF5A5A),
-        onTap: (index) {
-          setState(() {
-            _selectedTab = index;
-          });
-        },
-      ),),
+          currentIndex: _selectedTab,
+          type: BottomNavigationBarType.fixed,
+          items: [
+            _buildItem(tabItem: TabItem.add),
+            _buildItem(tabItem: TabItem.nyangsta),
+            _buildItem(tabItem: TabItem.home),
+            _buildItem(tabItem: TabItem.nyanggaebu),
+            _buildItem(tabItem: TabItem.qna),
+          ],
+          fixedColor: Color(0xFFFF5A5A),
+          onTap: (index) {
+            setState(() {
+              _selectedTab = index;
+            });
+          },
+        ),),
       body: TabHelper.item(index: _selectedTab),
     );
   }
