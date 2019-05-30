@@ -5,6 +5,7 @@ import 'package:petween/model/db.dart';
 import 'package:petween/mainpages/nyanggaebu/nyanggaebu.dart';
 
 
+<<<<<<< HEAD
 
 
 
@@ -32,6 +33,8 @@ Color _kindcolor(String kindc){
 
 
 
+=======
+>>>>>>> origin/bohee
 Widget _buildTile(BuildContext context, DocumentSnapshot data){
   final record = nyanggaebu.fromSnapshot(data);
   return Column(

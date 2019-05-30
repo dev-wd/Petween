@@ -1,17 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:petween/model/db.dart' as db;
+import 'package:petween/tab.dart';
 
 var _nameController = TextEditingController();
 var _nickController = TextEditingController();
 int _gender = null;
-String _birthyear = null;
-String _birthmonth = null;
-String _birthday = null;
-String _meetyear = null;
-String _meetmonth = null;
-String _meetday = null;
-String _kindCat = null;
+String _birthyear = tabrecord.birthyear;
+String _birthmonth = tabrecord.birthmonth;
+String _birthday = tabrecord.birthday;
+String _meetyear = tabrecord.meetyear;
+String _meetmonth = tabrecord.meetmonth;
+String _meetday = tabrecord.meetday;
+String _kindCat = tabrecord.kindcat;
 List<DropdownMenuItem<String>> dropyear = [];
 List<DropdownMenuItem<String>> dropmonth = [];
 List<DropdownMenuItem<String>> dropday = [];

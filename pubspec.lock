@@ -101,18 +101,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.5+1"
-  firebase_storage:
-<<<<<<< HEAD
-    dependency: transitive
-=======
-    dependency: "direct main"
->>>>>>> origin/mainea
-    description:
-      name: firebase_storage
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.1.0+1"
-<<<<<<< HEAD
   firebase_storage_image:
     dependency: "direct main"
     description:
@@ -120,8 +108,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.1"
-=======
->>>>>>> origin/mainea
   flutter:
     dependency: "direct main"
     description: flutter
@@ -152,11 +138,7 @@ packages:
       name: image
       url: "https://pub.dartlang.org"
     source: hosted
-<<<<<<< HEAD
     version: "2.1.0"
-=======
-    version: "2.0.9"
->>>>>>> origin/mainea
   image_picker:
     dependency: "direct main"
     description:
@@ -164,7 +146,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.0+8"
-<<<<<<< HEAD
   intl:
     dependency: "direct main"
     description:
@@ -172,8 +153,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.15.8"
-=======
->>>>>>> origin/mainea
   matcher:
     dependency: transitive
     description:

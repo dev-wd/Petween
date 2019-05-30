@@ -89,7 +89,7 @@ class _AddPetPageState extends State<AddPetPage>{
         "${new Random().nextInt(10000)}${DateTime.now().millisecond}";
 
     final StorageReference firebaseStorageRef =
-    FirebaseStorage.instance.ref().child('product').child('myimage.jpg');
+    FirebaseStorage.instance.ref().child('addpet').child('myimage.jpg');
     final StorageUploadTask task =
     firebaseStorageRef.putFile(_image);
 
@@ -179,7 +179,7 @@ class _AddPetPageState extends State<AddPetPage>{
               _nameController.clear();
               _nickController.clear();
               Navigator.pop(context);
-              Navigator.of(context).pushNamed('/home');
+              Navigator.of(context).pushNamed('/tab');
 
               /*
                 Navigator.of(context).push(MaterialPageRoute(

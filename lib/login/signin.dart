@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -76,78 +77,78 @@ class _SignInPageState extends State<SignInPage> with WidgetsBindingObserver {
                   SizedBox(height: 20.0,),
 
                   TextFormField (
-                      controller: _emailController,
-                      decoration: InputDecoration(
-                        filled: true,
-                        labelText: 'email',
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.black,
-                            width: 1.0,
-                          ),
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      filled: true,
+                      labelText: 'email',
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.black,
+                          width: 1.0,
                         ),
                       ),
-                      validator: (String value){
-                        if (value.isEmpty){
-                          return 'Please enter email';
-                        }
-                        if (!value.contains('@') || !value.contains('.')){
-                          return 'The email address is badly formatted';
-                        }
-                      },
+                    ),
+                    validator: (String value){
+                      if (value.isEmpty){
+                        return 'Please enter email';
+                      }
+                      if (!value.contains('@') || !value.contains('.')){
+                        return 'The email address is badly formatted';
+                      }
+                    },
                   ),
 
                   SizedBox(height: 20.0),
 
                   TextFormField (
-                      controller: _passwordController,
-                      decoration: InputDecoration(
-                        filled: true,
-                        labelText: 'password',
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.black,
-                            width: 1.0,
-                          ),
+                    controller: _passwordController,
+                    decoration: InputDecoration(
+                      filled: true,
+                      labelText: 'password',
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.black,
+                          width: 1.0,
                         ),
                       ),
-                      validator: (String value){
-                        if (value.isEmpty){
-                          return 'Please enter password';
-                        }
-                        if (value.length < 5){
-                          return 'Password must be 6 characters long or more';
-                        }
+                    ),
+                    validator: (String value){
+                      if (value.isEmpty){
+                        return 'Please enter password';
+                      }
+                      if (value.length < 5){
+                        return 'Password must be 6 characters long or more';
+                      }
 
-                      },
+                    },
                     obscureText: true,
                   ),
 
                   SizedBox(height: 20.0,),
 
                   TextFormField (
-                      controller: _confrimPasswordController,
-                      decoration: InputDecoration(
-                        filled: true,
-                        labelText: 'confirmPassword',
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: Colors.black,
-                            width: 1.0,
-                          ),
+                    controller: _confrimPasswordController,
+                    decoration: InputDecoration(
+                      filled: true,
+                      labelText: 'confirmPassword',
+                      border: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Colors.black,
+                          width: 1.0,
                         ),
                       ),
-                      validator: (String value){
-                        if (value.isEmpty){
-                          return 'Check your password';
-                        }
-                        if ( value != _passwordController.text) {
-                          return 'Password is not matching';
-                        }
-                        if (value.length < 5){
-                          return 'Password must be 6 characters long or more';
-                        }
-                      },
+                    ),
+                    validator: (String value){
+                      if (value.isEmpty){
+                        return 'Check your password';
+                      }
+                      if ( value != _passwordController.text) {
+                        return 'Password is not matching';
+                      }
+                      if (value.length < 5){
+                        return 'Password must be 6 characters long or more';
+                      }
+                    },
                     obscureText: true,
                   ),
 
@@ -170,12 +171,12 @@ class _SignInPageState extends State<SignInPage> with WidgetsBindingObserver {
                       ),
 
                       FlatButton(
-                          child: Text('LOG IN'),
-                          onPressed: () async{
-                            if (_formKey.currentState.validate()){
-                              register();
-                              };
-                          },
+                        child: Text('LOG IN'),
+                        onPressed: () async{
+                          if (_formKey.currentState.validate()){
+                            register();
+                          };
+                        },
                       ),
                     ],
                   ),
@@ -198,9 +199,8 @@ class _SignInPageState extends State<SignInPage> with WidgetsBindingObserver {
   void register() async {
 
     final FirebaseUser cuser = await _auth.createUserWithEmailAndPassword(
-        email: _emailController.text,
-        password: _passwordController.text,
-    );
+      email: _emailController.text,
+      password: _passwordController.text, );
     if (cuser != null) {
       Map<String, dynamic> user = {
         'userName': _userNameController.text,
@@ -209,7 +209,7 @@ class _SignInPageState extends State<SignInPage> with WidgetsBindingObserver {
       };
       Firestore.instance.collection('information').document(cuser.uid).setData(user);
       Navigator.of(context).push(MaterialPageRoute(
-            builder: (BuildContext context) => LoginPage()));
+          builder: (BuildContext context) => LoginPage()));
     }
     else {
       null;
@@ -219,4 +219,3 @@ class _SignInPageState extends State<SignInPage> with WidgetsBindingObserver {
 
 
 }
-

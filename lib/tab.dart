@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:petween/mainpages/home.dart';
 import 'package:petween/setting/setting.dart';
-import 'package:petween/mainpages/addboard.dart';
+import 'package:petween/mainpages/nyangtodo/todo.dart';
 import 'package:petween/mainpages/nyanggaebu/nyanggaebu.dart';
 import 'package:petween/mainpages/nyangsta/nyangsta.dart';
 import 'package:petween/mainpages/qna.dart';
@@ -17,7 +17,7 @@ class TabHelper {
   static Widget item({int index}) {
     switch (index) {
       case 0:
-        return AddBoardPage();
+        return TodoPage();
       case 1:
         return  NyangStaPage();
       case 2:
@@ -34,7 +34,7 @@ class TabHelper {
   static String description(TabItem tabItem) {
     switch (tabItem) {
       case TabItem.add:
-        return '추가';
+        return '할일';
       case TabItem.nyangsta:
         return '냥스타';
       case TabItem.home:
@@ -42,7 +42,7 @@ class TabHelper {
       case TabItem.nyanggaebu:
         return '냥계부';
       case TabItem.qna:
-        return 'Q&A';
+        return '꿀팁';
     }
 
     return '';
@@ -53,7 +53,7 @@ class TabHelper {
 
     switch (tabItem) {
       case TabItem.add:
-        return Icon(Icons.add_circle_outline);
+        return Icon(Icons.list);
       case TabItem.nyangsta:
         return Icon(Icons.camera_enhance);
       case TabItem.home:

@@ -24,7 +24,10 @@ class db {
   String uid;
   String nickname;
   String petname;
-
+  String image; //고양이 사진
+  String title; //QNA 제목
+  String info; //QNA 내용
+  String url;
   final DocumentReference reference;
 
   db.fromMap(Map<String, dynamic> map, String docID, {this.reference})
@@ -50,8 +53,10 @@ class db {
         nickname = map['nickname'],
         petname = map['petname'],
         uid = map['uid'];
+
   db.fromSnapshot(DocumentSnapshot snapshot)
       :this.fromMap(snapshot.data, snapshot.documentID, reference: snapshot.reference);
+
 
   @override
   String toString() => "db<$birthday:$birthmonth:$birthyear"
@@ -139,4 +144,42 @@ class nyangsta {
 
   @override
   String toString() => "nyangsta<$isCommand:$write:$nyangImageUrl:$curruentTime:$liker:$likeNum:$isLike:$uid:$chatUser:$selfCommand:$chatNum>";
+}
+class todo {
+  String work;
+  bool isdone;
+  final DocumentReference reference;
+
+  todo.fromMap(Map<String, dynamic> map, String docID, {this.reference})
+      : assert(map['work'] != null),
+        assert(map['isdone'] != null),
+        work = map['work'],
+        isdone = map['isdone'];
+  todo.fromSnapshot(DocumentSnapshot snapshot)
+      :this.fromMap(snapshot.data, snapshot.documentID, reference: snapshot.reference);
+
+  @override
+  String toString() => "todo<$work:$isdone>";
+
+}
+
+
+class qna{
+  String info;
+  String title;
+  bool isexpanded;
+  final DocumentReference reference;
+
+  qna.fromMap(Map<String, dynamic> map, String docID, {this.reference})
+  : assert(map['info'] != null),
+  assert(map['title'] != null),
+  assert(map['isexpanded']!=null),
+  info = map['info'],
+  title = map['title'],
+  isexpanded = map['isexpanded'];
+  qna.fromSnapshot(DocumentSnapshot snapshot)
+  :this.fromMap(snapshot.data, snapshot.documentID, reference: snapshot.reference);
+
+  @override
+  String toString() => "qna<$info:$title:$isexpanded>";
 }
