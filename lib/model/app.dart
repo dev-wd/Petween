@@ -6,14 +6,15 @@ import 'package:petween/setting/setting.dart';
 import 'package:petween/login/signin.dart';
 import 'package:petween/mainpages/home.dart';
 import 'package:petween/tab.dart';
-import 'package:petween/mainpages/addboard.dart';
-import 'package:petween/mainpages/nyanggaebu.dart';
-import 'package:petween/mainpages/nyangsta.dart';
+import 'package:petween/mainpages/nyanggaebu/nyanggaebu.dart';
+import 'package:petween/mainpages/nyangsta/nyangsta.dart';
 import 'package:petween/mainpages/qna.dart';
 import 'package:petween/pet_create_and_show/addpet.dart';
 import 'package:petween/pet_create_and_show/profile_edit.dart';
-import 'package:petween/mainpages/todo.dart';
-import 'package:petween/mainpages/addtodo.dart';
+import 'package:petween/mainpages/nyangtodo/todo.dart';
+import 'package:petween/mainpages/nyangtodo/addtodo.dart';
+import 'package:petween/mainpages/nyanggaebu/listadd.dart';
+import 'package:petween/mainpages/nyangsta/addnyangsta.dart';
 
 class PetweenApp extends StatelessWidget {
 
@@ -22,8 +23,6 @@ class PetweenApp extends StatelessWidget {
     return MaterialApp(
       title: 'Shrine',
       home: PreloginPage(),
-      //initialRoute: '/login',
-      // onGenerateRoute: _getRoute,
       routes: <String, WidgetBuilder>{
         '/login': (BuildContext context) => LoginPage(),
         '/catchoice': (BuildContext context) => ProfileCreatePage(),
@@ -31,14 +30,14 @@ class PetweenApp extends StatelessWidget {
         '/signin' : (BuildContext context) => SignInPage(),
         '/addpet' : (BuildContext context) => AddPetPage(),
         '/home' : (BuildContext context) => HomePage(),
-        '/tab' : (BuildContext context) => TabPage(),
-        '/addboard' : (BuildContext context) => AddBoardPage(),
         '/nyanggaebu' : (BuildContext context) => NyangGaeBuPage(),
         '/qna' : (BuildContext context) => QNAPage(),
         '/nyangsta' : (BuildContext context) => NyangStaPage(),
         '/edit' : (BuildContext context) => ProfileEditPage(),
         '/todo' : (BuildContext context) => TodoPage(),
         '/addtodo' : (BuildContext context) => AddTodoPage(),
+        '/listadd' : (BuildContext context) => ListAddPage(),
+        '/addstar' : (BuildContext context) => AddNyangStaPage(),
       },
     );
   }

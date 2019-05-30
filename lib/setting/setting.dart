@@ -40,11 +40,6 @@ class _SettingPageState extends State<SettingPage>{
                   },
               ),
               SizedBox(height: 20.0),
-              FlatButton(
-                child: Text('개인정보 수정'),
-                onPressed:(){ Navigator.pop(context);
-                Navigator.of(context).pushNamed('/edit');},
-              ),
               ExpansionPanelList(
                 expansionCallback: (int index, bool isExpanded){
                   setState(() {

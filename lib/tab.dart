@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:petween/mainpages/home.dart';
 import 'package:petween/setting/setting.dart';
-import 'package:petween/mainpages/addboard.dart';
-import 'package:petween/mainpages/nyanggaebu.dart';
-import 'package:petween/mainpages/nyangsta.dart';
+import 'package:petween/mainpages/nyangtodo/todo.dart';
+import 'package:petween/mainpages/nyanggaebu/nyanggaebu.dart';
+import 'package:petween/mainpages/nyangsta/nyangsta.dart';
 import 'package:petween/mainpages/qna.dart';
 
 
+var tabrecord;
+
 
 GlobalKey<ScaffoldState> _key = new GlobalKey<ScaffoldState>();
-enum TabItem { info, event, home, yasick, schedule }
+enum TabItem { nyangsta, home, add, nyanggaebu, qna }
 
 class TabHelper {
   static Widget item({int index}) {
     switch (index) {
       case 0:
-        return AddBoardPage();
+        return TodoPage();
       case 1:
         return  NyangStaPage();
       case 2:
@@ -31,16 +33,16 @@ class TabHelper {
 
   static String description(TabItem tabItem) {
     switch (tabItem) {
-      case TabItem.home:
-        return '추가';
-      case TabItem.info:
+      case TabItem.add:
+        return '할일';
+      case TabItem.nyangsta:
         return '냥스타';
-      case TabItem.event:
+      case TabItem.home:
         return '홈';
-      case TabItem.yasick:
+      case TabItem.nyanggaebu:
         return '냥계부';
-      case TabItem.schedule:
-        return 'Q&A';
+      case TabItem.qna:
+        return '꿀팁';
     }
 
     return '';
@@ -50,15 +52,15 @@ class TabHelper {
     double _iconSize = 35;
 
     switch (tabItem) {
-      case TabItem.home:
-        return Icon(Icons.add_circle_outline);
-      case TabItem.info:
+      case TabItem.add:
+        return Icon(Icons.list);
+      case TabItem.nyangsta:
         return Icon(Icons.camera_enhance);
-      case TabItem.event:
+      case TabItem.home:
         return Icon(Icons.home);
-      case TabItem.yasick:
+      case TabItem.nyanggaebu:
         return Icon(Icons.calendar_today);
-      case TabItem.schedule:
+      case TabItem.qna:
         return Icon(Icons.chat_bubble_outline);
     }
     return Icon(Icons.add_circle_outline);
@@ -66,36 +68,50 @@ class TabHelper {
 }
 
 class TabPage extends StatefulWidget {
+
+  var _record;
+
+  TabPage(this._record);
+
+
+
+
   @override
-  _TabPageState createState() => _TabPageState();
+  _TabPageState createState() => _TabPageState(this._record);
 }
 
 class _TabPageState extends State<TabPage> {
+
+
+  var _record;
+  _TabPageState(this._record);
+
   int _selectedTab = 2;
 
   @override
   Widget build(BuildContext context) {
+    tabrecord = _record;
     return Scaffold(
       key: _key,
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(canvasColor:Color(0xFFFFDF7E)),
         child:BottomNavigationBar(
-        currentIndex: _selectedTab,
-        type: BottomNavigationBarType.fixed,
-        items: [
-          _buildItem(tabItem: TabItem.home),
-          _buildItem(tabItem: TabItem.info),
-          _buildItem(tabItem: TabItem.event),
-          _buildItem(tabItem: TabItem.yasick),
-          _buildItem(tabItem: TabItem.schedule),
-        ],
-        fixedColor: Color(0xFFFF5A5A),
-        onTap: (index) {
-          setState(() {
-            _selectedTab = index;
-          });
-        },
-      ),),
+          currentIndex: _selectedTab,
+          type: BottomNavigationBarType.fixed,
+          items: [
+            _buildItem(tabItem: TabItem.add),
+            _buildItem(tabItem: TabItem.nyangsta),
+            _buildItem(tabItem: TabItem.home),
+            _buildItem(tabItem: TabItem.nyanggaebu),
+            _buildItem(tabItem: TabItem.qna),
+          ],
+          fixedColor: Color(0xFFFF5A5A),
+          onTap: (index) {
+            setState(() {
+              _selectedTab = index;
+            });
+          },
+        ),),
       body: TabHelper.item(index: _selectedTab),
     );
   }
