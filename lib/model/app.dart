@@ -38,8 +38,8 @@ class PetweenApp extends StatelessWidget {
         '/edit' : (BuildContext context) => ProfileEditPage(),
         '/listadd' : (BuildContext context) => ListAddPage(),
         '/addstar' : (BuildContext context) => AddNyangStaPage(),
-        '/chat': (BuildContext context) => ChatNyangStaPage(),
-        '/search': (BuildContext context) => SearchNyangStaPage(),
+        '/chat': (BuildContext context) => ChatNyangstaPage(),
+        '/search': (BuildContext context) => SearchNyangPage(),
       },
     );
   }
