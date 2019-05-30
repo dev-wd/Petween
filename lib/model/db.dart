@@ -27,7 +27,6 @@ class db {
       : assert(map['petname'] != null),
         assert(map['nickname'] != null),
         assert(map['uid'] != null),
-        assert(map['informationID'] != null),
         assert(map['kind'] != null),
         assert(map['gender'] != null),
         assert(map['meetday'] != null),
@@ -46,13 +45,13 @@ class db {
         kind = map['kind'],
         nickname = map['nickname'],
         petname = map['petname'],
-        uid = map['uid'],
-        informationID = map['informationID'];
+        uid = map['uid'];
   db.fromSnapshot(DocumentSnapshot snapshot)
       :this.fromMap(snapshot.data, snapshot.documentID, reference: snapshot.reference);
 
   @override
-  String toString() => "db<$userName:$email:$gender:$kind:$nickname:$petname:$uid:$informationID>";
+  String toString() => "db<$birthday:$birthmonth:$birthyear"
+      ":$meetyear:$meetmonth:$meetday:$gender:$kind:$nickname:$petname:$uid>";
 
 }
 

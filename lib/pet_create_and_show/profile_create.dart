@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:petween/model/db.dart';
+import 'package:petween/tab.dart';
 
 class ProfileCreatePage extends StatefulWidget {
   @override
@@ -12,7 +13,8 @@ Widget _buildCard(BuildContext context, DocumentSnapshot data) {
   final record = db.fromSnapshot(data);
 
   return Padding(
-    padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+    padding:
+        const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 16.0, right: 16.0),
     child: Container(
       child: FittedBox(
         child: Material(
@@ -35,7 +37,8 @@ Widget _buildCard(BuildContext context, DocumentSnapshot data) {
               ),
               GestureDetector(
                 onTap: () {
-                  Navigator.of(context).pushNamed('/tab');
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => TabPage(record)));
                 },
                 child: Container(
                   child: Container(
@@ -57,7 +60,7 @@ Widget _buildCard(BuildContext context, DocumentSnapshot data) {
                                         fontSize: 10,
                                         color: Colors.lightBlue))
                                 : Text(
-                                    'M',
+                                    'W',
                                     style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.redAccent,
@@ -147,60 +150,51 @@ class _ProfileCreatePageState extends State<ProfileCreatePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            title: Text(
-              'P E T W E E N',
-              style: TextStyle(color: Colors.black),
-            ),
-            backgroundColor: Color(0xFFFFCA28),
-            leading: Text('')),
-        body: Center(
-          child: Column(
-            children: <Widget>[
-              StreamBuilder<QuerySnapshot>(
-                stream: Firestore.instance
-                    .collection('pet')
-                    .where('uid', isEqualTo: _curUID)
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  if (snapshot.data == null)
-                    return Container(
-                        child: Center(
-                      child: Text("Loading.."),
-                    ));
-                  else {
-                    return GridView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 1),
-                      itemCount: snapshot.data.documents.length,
-                      padding: EdgeInsets.all(2.0),
-                      itemBuilder: (BuildContext context, int index) {
-                        return _buildCard(
-                            context, snapshot.data.documents[index]);
-                      },
-                    );
-                  }
-                },
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  FlatButton(
-                    child: Text(
-                      '                ADD PET                ',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    color: Color(0xFFFFCA28),
-                    onPressed: () {
-                      Navigator.of(context).pushNamed('/addpet');
-                    },
-                  ),
-                ],
-              ),
-            ],
+      appBar: AppBar(
+          title: Text(
+            'P E T W E E N',
+            style: TextStyle(color: Colors.black),
           ),
-        ));
+          backgroundColor: Color(0xFFFFCA28),
+          leading: Text('')),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 24.0),
+        child: FloatingActionButton(
+          backgroundColor: Color(0xFFFFCA28),
+          child: Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.of(context).pushReplacementNamed('/addpet');
+          },
+          heroTag: null,
+        ),
+      ),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: Firestore.instance
+            .collection('pet')
+            .where('uid', isEqualTo: _curUID)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.data == null)
+            return Container(
+                child: Center(
+              child: Text("Loading.."),
+            ));
+          else {
+            return ListView.builder(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              padding: EdgeInsets.all(2.0),
+              itemCount: snapshot.data.documents.length,
+              itemBuilder: (BuildContext context, int index) {
+                return _buildCard(context, snapshot.data.documents[index]);
+              },
+            );
+          }
+        },
+      ),
+    );
   }
 }

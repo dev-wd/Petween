@@ -7,6 +7,8 @@ import 'package:petween/mainpages/nyangsta.dart';
 import 'package:petween/mainpages/qna.dart';
 
 
+var tabrecord;
+
 
 GlobalKey<ScaffoldState> _key = new GlobalKey<ScaffoldState>();
 enum TabItem { nyangsta, home, add, nyanggaebu, qna }
@@ -66,15 +68,29 @@ class TabHelper {
 }
 
 class TabPage extends StatefulWidget {
+
+  var _record;
+
+  TabPage(this._record);
+
+
+
+
   @override
-  _TabPageState createState() => _TabPageState();
+  _TabPageState createState() => _TabPageState(this._record);
 }
 
 class _TabPageState extends State<TabPage> {
+
+
+  var _record;
+  _TabPageState(this._record);
+
   int _selectedTab = 2;
 
   @override
   Widget build(BuildContext context) {
+    tabrecord = _record;
     return Scaffold(
       key: _key,
       bottomNavigationBar: Theme(

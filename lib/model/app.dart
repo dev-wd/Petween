@@ -27,7 +27,7 @@ class PetweenApp extends StatelessWidget {
         '/signin' : (BuildContext context) => SignInPage(),
         '/addpet' : (BuildContext context) => AddPetPage(),
         '/home' : (BuildContext context) => HomePage(),
-        '/tab' : (BuildContext context) => TabPage(),
+        //'/tab' : (BuildContext context) => TabPage(),
         '/addboard' : (BuildContext context) => AddBoardPage(),
         '/nyanggaebu' : (BuildContext context) => NyangGaeBuPage(),
         '/qna' : (BuildContext context) => QNAPage(),
