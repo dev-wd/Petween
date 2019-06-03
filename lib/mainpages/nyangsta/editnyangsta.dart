@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:petween/model/db.dart' as db;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io';
+import 'package:petween/tab.dart';
 
 class EditNyangstaPage extends StatefulWidget {
   db.nyangsta record;
@@ -68,51 +69,53 @@ class _EditNyangstaPageState extends State<EditNyangstaPage>{
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-        appBar: AppBar(
-          title: Text('게시물 수정'),
-          backgroundColor: Color(0xFFFFCA28),
-          leading: Padding(
-            padding: const EdgeInsets.fromLTRB(15, 25, 0, 0),
+      appBar: AppBar(
+        title: Text('게시물 수정'),
+        backgroundColor: Color(0xFFFFCA28),
+        leading: Padding(
+          padding: const EdgeInsets.fromLTRB(15, 25, 0, 0),
+          child: GestureDetector(
+            onTap: (){
+              Navigator.of(context).pop();
+            },
+            child: Container(
+                child: Text('취소',
+                    style: TextStyle(color: Colors.white, fontSize: 16.0,
+                        fontWeight: FontWeight.bold))),
+          ),
+        ),
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 25, 15, 0),
             child: GestureDetector(
+              child: Container(
+                child: Text('저장',
+                    style: TextStyle(color: Color(0xFFFF5A5A), fontSize: 16.0,
+                        fontWeight: FontWeight.bold)),
+              ),
               onTap: (){
+                setState(() {
+                  record.reference.updateData({
+                    'nyangImageUrl': record.nyangImageUrl,
+                    'write': _contentController.text,
+                    'isCommand': _isCommand,
+                  });
+                });
                 Navigator.of(context).pop();
               },
-              child: Container(
-                  child: Text('취소',
-                      style: TextStyle(color: Colors.white, fontSize: 16.0,
-                          fontWeight: FontWeight.bold))),
             ),
           ),
-          actions: <Widget>[
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 25, 15, 0),
-              child: GestureDetector(
-                child: Container(
-                  child: Text('저장',
-                      style: TextStyle(color: Color(0xFFFF5A5A), fontSize: 16.0,
-                          fontWeight: FontWeight.bold)),
-                ),
-                onTap: (){
-                 setState(() {
-                   record.reference.updateData({
-                     'nyangImageUrl': record.nyangImageUrl,
-                     'write': _contentController.text,
-                     'isCommand': _isCommand,
-                   });
-                 });
-                  Navigator.of(context).pop();
-                },
-              ),
-            ),
-          ],
-        ),
-        body: _buildBody(context),
+        ],
+      ),
+      body: _buildBody(context),
     );
   }
 
   Widget _buildBody(BuildContext context){
     return StreamBuilder<DocumentSnapshot>(
-      stream: Firestore.instance.collection('nyangstar').document(record.documentID).snapshots(),
+      stream: Firestore.instance.collection('nyangstar').document(tabrecord.nickname)
+          .collection('nyangstaBoard').document(record.nyangstaDocumentID)
+          .snapshots(),
       builder: (context, snapshot){
         if (!snapshot.hasData) return LinearProgressIndicator();
         return _buildEdit(context, snapshot.data);

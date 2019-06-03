@@ -6,6 +6,7 @@ import 'package:petween/setting/setting.dart';
 import 'package:petween/login/signin.dart';
 import 'package:petween/mainpages/home.dart';
 import 'package:petween/tab.dart';
+import 'package:petween/model/db.dart';
 import 'package:petween/mainpages/nyanggaebu/nyanggaebu.dart';
 import 'package:petween/mainpages/nyangsta/nyangsta.dart';
 import 'package:petween/mainpages/nyangsta/addnyangsta.dart';
@@ -31,7 +32,7 @@ class PetweenApp extends StatelessWidget {
         '/signin' : (BuildContext context) => SignInPage(),
         '/addpet' : (BuildContext context) => AddPetPage(),
         '/home' : (BuildContext context) => HomePage(),
-//        '/tab' : (BuildContext context) => TabPage(),
+        //'/tab' : (BuildContext context) => TabPage(),
         '/nyanggaebu' : (BuildContext context) => NyangGaeBuPage(),
         '/qna' : (BuildContext context) => QNAPage(),
         '/nyangsta' : (BuildContext context) => NyangStaPage(),

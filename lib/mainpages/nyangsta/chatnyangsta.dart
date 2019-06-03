@@ -48,7 +48,7 @@ class _ChatNyangstaPageState extends State<ChatNyangstaPage>{
 
   Widget _builderBody(BuildContext context){
     return StreamBuilder<DocumentSnapshot>(
-      stream: Firestore.instance.collection('nyangstar').document(record.documentID).snapshots(),
+      stream: Firestore.instance.collection('nyangstar').document(record.nyangstaDocumentID).snapshots(),
       builder: (context, snapshot){
         if (!snapshot.hasData) return LinearProgressIndicator();
         return _buildChat(context, snapshot.data);
@@ -78,7 +78,7 @@ class _ChatNyangstaPageState extends State<ChatNyangstaPage>{
             child: ListView.builder(
               padding: EdgeInsets.all(8.0),
               reverse: true,
-              itemBuilder: (_, int index) => record.chatUser[index],
+              itemBuilder: (_, int index) => record.[index],
               itemCount: record.chatUser.length,
             )
         ),

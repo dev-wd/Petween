@@ -28,8 +28,8 @@ Widget _buildCard(BuildContext context, DocumentSnapshot data) {
                 height: 100,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(5.0),
-                  child: Image.asset(
-                    'assets/examplemanda.jpg',
+                  child: Image.network(
+                    record.image,
                     fit: BoxFit.contain,
                     alignment: Alignment.topLeft,
                   ),
@@ -38,9 +38,12 @@ Widget _buildCard(BuildContext context, DocumentSnapshot data) {
               GestureDetector(
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => TabPage(record)));
+                      MaterialPageRoute(builder: (context) => TabPage(record,2,2)));
                 },
                 child: Container(
+
+                  height: 80,
+                  width: 100,
                   child: Container(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,

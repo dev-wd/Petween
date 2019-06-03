@@ -20,8 +20,8 @@ class _HomePageState extends State<HomePage> {
           width: double.infinity,
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage(
-                'assets/examplemanda.jpg',
+              image: NetworkImage(
+                 tabrecord.image,
               ),
               fit: BoxFit.cover,
             ),
