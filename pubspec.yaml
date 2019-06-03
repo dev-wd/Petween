@@ -17,16 +17,11 @@ dependencies:
   intl:
   image_picker:
   firebase_storage:
-<<<<<<< HEAD
 
-=======
->>>>>>> 10e60d2feeb75dcc2815b0d944c9196e87e22bac
 dev_dependencies:
   flutter_test:
     sdk: flutter
   cloud_firestore: ^0.8.2
-
-
   flutter_launcher_icons: ^0.7.0
 
 flutter_icons:

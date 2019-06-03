@@ -27,7 +27,8 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>com.googleusercontent.apps.270225901928-g9rknfocu5h219tc5nmkt2eau4k66rac</string>
+				<string>com.googleusercontent.apps.270225901928-g9rknfocu5h219tc5nmkt2eau4k66rac
+</string>
 			</array>
 		</dict>
 	</array>
@@ -35,6 +36,12 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>This app requires access to the camera.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This app requires access to the photo library.</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.270225901928-g9rknfocu5h219tc5nmkt2eau4k66rac</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -54,11 +61,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.270225901928-g9rknfocu5h219tc5nmkt2eau4k66rac</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>This app requires access to the photo library.</string>
-	<key>NSCameraUsageDescription</key>
-    <string>This app requires access to the camera.</string>
 </dict>
 </plist>

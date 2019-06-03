@@ -50,7 +50,7 @@ class _ProfileEditPageState extends State<ProfileEditPage>{
         .collection('information')
         .document(_curUID)
         .get();
-    _recordinfo = information.fromSnapshot(_curUserDocument);
+    _recordinfo = db.information.fromSnapshot(_curUserDocument);
     return _currentUsersemi;
   }
 

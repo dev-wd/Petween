@@ -69,45 +69,45 @@ class _EditNyangstaPageState extends State<EditNyangstaPage>{
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-        appBar: AppBar(
-          title: Text('게시물 수정'),
-          backgroundColor: Color(0xFFFFCA28),
-          leading: Padding(
-            padding: const EdgeInsets.fromLTRB(15, 25, 0, 0),
+      appBar: AppBar(
+        title: Text('게시물 수정'),
+        backgroundColor: Color(0xFFFFCA28),
+        leading: Padding(
+          padding: const EdgeInsets.fromLTRB(15, 25, 0, 0),
+          child: GestureDetector(
+            onTap: (){
+              Navigator.of(context).pop();
+            },
+            child: Container(
+                child: Text('취소',
+                    style: TextStyle(color: Colors.white, fontSize: 16.0,
+                        fontWeight: FontWeight.bold))),
+          ),
+        ),
+        actions: <Widget>[
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 25, 15, 0),
             child: GestureDetector(
+              child: Container(
+                child: Text('저장',
+                    style: TextStyle(color: Color(0xFFFF5A5A), fontSize: 16.0,
+                        fontWeight: FontWeight.bold)),
+              ),
               onTap: (){
+                setState(() {
+                  record.reference.updateData({
+                    'nyangImageUrl': record.nyangImageUrl,
+                    'write': _contentController.text,
+                    'isCommand': _isCommand,
+                  });
+                });
                 Navigator.of(context).pop();
               },
-              child: Container(
-                  child: Text('취소',
-                      style: TextStyle(color: Colors.white, fontSize: 16.0,
-                          fontWeight: FontWeight.bold))),
             ),
           ),
-          actions: <Widget>[
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 25, 15, 0),
-              child: GestureDetector(
-                child: Container(
-                  child: Text('저장',
-                      style: TextStyle(color: Color(0xFFFF5A5A), fontSize: 16.0,
-                          fontWeight: FontWeight.bold)),
-                ),
-                onTap: (){
-                 setState(() {
-                   record.reference.updateData({
-                     'nyangImageUrl': record.nyangImageUrl,
-                     'write': _contentController.text,
-                     'isCommand': _isCommand,
-                   });
-                 });
-                  Navigator.of(context).pop();
-                },
-              ),
-            ),
-          ],
-        ),
-        body: _buildBody(context),
+        ],
+      ),
+      body: _buildBody(context),
     );
   }
 

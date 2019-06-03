@@ -80,16 +80,16 @@ class _ChatNyangstaPageState extends State<ChatNyangstaPage>{
                       final crecord = nyangchat.fromSnapshot(snapshot.data.documents[i]);
                       return Dismissible(
 
-                          key: Key(crecord.toString()),
+                        key: Key(crecord.toString()),
 
-                          onDismissed: (direction) {
-                            setState(() {
-                              crecord.reference.delete();
-                              record.reference.updateData({'chatNum' : record.chatNum - 1});
-                            });
-                          },
-                          background: Container(color: Colors.red),
-                          child:  _buildChat(context, snapshot.data.documents[i]),
+                        onDismissed: (direction) {
+                          setState(() {
+                            crecord.reference.delete();
+                            record.reference.updateData({'chatNum' : record.chatNum - 1});
+                          });
+                        },
+                        background: Container(color: Colors.red),
+                        child:  _buildChat(context, snapshot.data.documents[i]),
                       );
                     }
                 );

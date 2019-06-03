@@ -7,7 +7,28 @@ String userEmail;
 FirebaseUser user;
 File image;
 
-List<String> kindCat = ['노르웨이숲고양이','데본렉스','라가머핀','리팜','랙돌','러시안블루','맹크스고양이','메인쿤','발리네즈','버만','버마즈','봄베이','시베리아고양이','샴고양이','셀커크렉스','소말리','스코티시폴드','스핑크스','싱갸퓨라','아메리칸밤테일'];
+List<String> kindCat = [
+  '노르웨이숲고양이',
+  '데본렉스',
+  '라가머핀',
+  '리팜',
+  '랙돌',
+  '러시안블루',
+  '맹크스고양이',
+  '메인쿤',
+  '발리네즈',
+  '버만',
+  '버마즈',
+  '봄베이',
+  '시베리아고양이',
+  '샴고양이',
+  '셀커크렉스',
+  '소말리',
+  '스코티시폴드',
+  '스핑크스',
+  '싱갸퓨라',
+  '아메리칸밤테일'
+];
 
 class db {
   String userName;
@@ -42,6 +63,7 @@ class db {
         assert(map['birthyear'] != null),
         assert(map['birthmonth'] != null),
         assert(map['birthday'] != null),
+        assert(map['image'] != null),
         birthday = map['birthday'],
         birthmonth = map['birthmonth'],
         birthyear = map['birthyear'],
@@ -52,21 +74,18 @@ class db {
         kind = map['kind'],
         nickname = map['nickname'],
         petname = map['petname'],
+        uid = map['uid'],
         image = map['image'],
-        profileUrl = map['profileUrl'],
-        uid = map['uid'];
+        profileUrl = map['profileUrl'];
 
   db.fromSnapshot(DocumentSnapshot snapshot)
-      :this.fromMap(snapshot.data, snapshot.documentID, reference: snapshot.reference);
-
+      : this.fromMap(snapshot.data, snapshot.documentID,
+            reference: snapshot.reference);
 
   @override
   String toString() => "db<$birthday:$birthmonth:$birthyear"
-      ":$meetyear:$meetmonth:$meetday:$gender:$kind:$nickname:$petname:$uid"
-      ":$profileUrl>";
-
+      ":$meetyear:$meetmonth:$meetday:$gender:$kind:$nickname:$petname:$uid>";
 }
-
 
 class information {
   String userName;
@@ -79,12 +98,12 @@ class information {
         userName = map['userName'],
         email = map['email'];
   information.fromSnapshot(DocumentSnapshot snapshot)
-      :this.fromMap(snapshot.data, snapshot.documentID, reference: snapshot.reference);
+      : this.fromMap(snapshot.data, snapshot.documentID,
+            reference: snapshot.reference);
 
   @override
   String toString() => "information<$userName:$email:>";
 }
-
 
 class nyanggaebu {
   String productkind;
@@ -103,11 +122,12 @@ class nyanggaebu {
         productprice = map['productprice'],
         isbought = map['isbought'];
   nyanggaebu.fromSnapshot(DocumentSnapshot snapshot)
-      :this.fromMap(snapshot.data, snapshot.documentID, reference: snapshot.reference);
+      : this.fromMap(snapshot.data, snapshot.documentID,
+            reference: snapshot.reference);
 
   @override
-  String toString() => "nyanggaebu<$productkind:$productname:$productprice:$isbought>";
-
+  String toString() =>
+      "nyanggaebu<$productkind:$productname:$productprice:$isbought>";
 }
 
 class nyangsta {
@@ -199,7 +219,9 @@ class nyangchat {
 
 }
 
-class qna{
+
+
+class qna {
   String info;
   String title;
   bool isexpanded;
@@ -208,12 +230,13 @@ class qna{
   qna.fromMap(Map<String, dynamic> map, String docID, {this.reference})
       : assert(map['info'] != null),
         assert(map['title'] != null),
-        assert(map['isexpanded']!=null),
+        assert(map['isexpanded'] != null),
         info = map['info'],
         title = map['title'],
         isexpanded = map['isexpanded'];
   qna.fromSnapshot(DocumentSnapshot snapshot)
-      :this.fromMap(snapshot.data, snapshot.documentID, reference: snapshot.reference);
+      : this.fromMap(snapshot.data, snapshot.documentID,
+            reference: snapshot.reference);
 
   @override
   String toString() => "qna<$info:$title:$isexpanded>";

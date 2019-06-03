@@ -101,8 +101,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.5+1"
-<<<<<<< HEAD
-=======
   firebase_storage:
     dependency: "direct main"
     description:
@@ -110,7 +108,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0+1"
->>>>>>> 10e60d2feeb75dcc2815b0d944c9196e87e22bac
   firebase_storage_image:
     dependency: "direct main"
     description:
@@ -148,11 +145,7 @@ packages:
       name: image
       url: "https://pub.dartlang.org"
     source: hosted
-<<<<<<< HEAD
     version: "2.1.0"
-=======
-    version: "2.0.9"
->>>>>>> 10e60d2feeb75dcc2815b0d944c9196e87e22bac
   image_picker:
     dependency: "direct main"
     description:

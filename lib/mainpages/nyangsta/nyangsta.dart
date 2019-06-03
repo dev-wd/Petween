@@ -32,11 +32,11 @@ class _NyangStaPageState extends State<NyangStaPage>{
           ),
 
           IconButton(
-              icon: Icon(Icons.search,
+            icon: Icon(Icons.search,
               color: Color(0xFF5D4037),
-              ),
+            ),
             onPressed: (){
-                Navigator.of(context).pushNamed('/search');
+              Navigator.of(context).pushNamed('/search');
             },
           ),
 
@@ -67,9 +67,9 @@ class _NyangStaPageState extends State<NyangStaPage>{
           }
           else{
             return Container(
-                child: Center(
-                  child: Text("Loading.."),
-                ),
+              child: Center(
+                child: Text("Loading.."),
+              ),
             );
           }
         }
@@ -127,8 +127,8 @@ class _NyangStaPageState extends State<NyangStaPage>{
                       ),
                     ),
                   ),
-                  
-                  
+
+
                   Padding(
                     padding: const EdgeInsets.fromLTRB(80, 0, 0, 0),
                     child: Row(
@@ -145,7 +145,7 @@ class _NyangStaPageState extends State<NyangStaPage>{
                               }
                           ),
                         ),
-                        
+
                         Container(
                             child: _isUser() ?
                             IconButton(
@@ -280,8 +280,8 @@ class _NyangStaPageState extends State<NyangStaPage>{
                             ChatNyangstaPage(record: record)));
                       },
                     )
-                    :
-                        null,
+                        :
+                    null,
                   ),
 
 
@@ -290,28 +290,28 @@ class _NyangStaPageState extends State<NyangStaPage>{
             ),
 
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 10, 0, 0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    '${tabrecord.nickname}',
-                    style: TextStyle(
-                      fontSize: 17.0,
-                      fontWeight: FontWeight.bold,
+                padding: const EdgeInsets.fromLTRB(20, 10, 0, 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      '${tabrecord.nickname}',
+                      style: TextStyle(
+                        fontSize: 17.0,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
 
-                  SizedBox(height: 10.0,),
+                    SizedBox(height: 10.0,),
 
-                  Text(
-                    '${record.write}',
-                    style: TextStyle(
-                      fontSize: 13.0,
+                    Text(
+                      '${record.write}',
+                      style: TextStyle(
+                        fontSize: 13.0,
+                      ),
                     ),
-                  ),
-                ],
-              )
+                  ],
+                )
             ),
 
             Padding(

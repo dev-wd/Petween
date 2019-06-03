@@ -65,7 +65,10 @@ class _ListAddPageState extends State<ListAddPage> {
                 style: TextStyle(color: Colors.white),
               ),
               onTap: () {
-                Navigator.of(context).pushNamed('/tab');
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => TabPage(tabrecord,3,3)));
               },
             ),
           ),
@@ -91,7 +94,7 @@ class _ListAddPageState extends State<ListAddPage> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => TabPage(tabrecord)))
+                                      builder: (context) => TabPage(tabrecord,3,3)))
                             })
                         .catchError((err) => print(err));
                   },

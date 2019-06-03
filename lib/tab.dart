@@ -5,7 +5,7 @@ import 'package:petween/mainpages/nyangtodo/todo.dart';
 import 'package:petween/mainpages/nyanggaebu/nyanggaebu.dart';
 import 'package:petween/mainpages/nyangsta/nyangsta.dart';
 import 'package:petween/mainpages/qna.dart';
-
+import 'package:petween/mainpages/nyangsta/searchnyangsta.dart';
 
 var tabrecord;
 
@@ -26,6 +26,8 @@ class TabHelper {
         return  NyangGaeBuPage();
       case 4:
         return  QNAPage();
+      case 5:
+        return  SearchNyangPage();
     }
 
     return SettingPage();
@@ -70,23 +72,22 @@ class TabHelper {
 class TabPage extends StatefulWidget {
 
   var _record;
+  int _selectedTab;
+  int _navigatedTab;
 
-  TabPage(this._record);
-
-
-
+  TabPage(this._record, this._selectedTab, this._navigatedTab);
 
   @override
-  _TabPageState createState() => _TabPageState(this._record);
+  _TabPageState createState() => _TabPageState(this._record,this._selectedTab, this._navigatedTab);
 }
 
 class _TabPageState extends State<TabPage> {
 
 
   var _record;
-  _TabPageState(this._record);
-
-  int _selectedTab = 2;
+  int _selectedTab;
+  int _navigatedTab;
+  _TabPageState(this._record, this._selectedTab, this._navigatedTab);
 
   @override
   Widget build(BuildContext context) {
@@ -109,10 +110,11 @@ class _TabPageState extends State<TabPage> {
           onTap: (index) {
             setState(() {
               _selectedTab = index;
+              _navigatedTab = index;
             });
           },
         ),),
-      body: TabHelper.item(index: _selectedTab),
+      body: TabHelper.item(index: _navigatedTab),
     );
   }
 
