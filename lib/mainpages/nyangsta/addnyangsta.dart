@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:petween/model/db.dart' as db;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:petween/tab.dart';
 
 
 class AddNyangStaPage extends StatefulWidget {
@@ -87,12 +88,18 @@ class _AddNyangStaPageState extends State<AddNyangStaPage>{
                       'write' : _contentController.text,
                       'liker' :[],
                       'isLike' : false,
-                      'chatNum' : 0,
-                      'chatUser' : [],
-                      'selfCommand' : [],
                       'isCommand': _isCommand,
+                      'chatNum': 0,
+                      'compareNickName' :tabrecord.nickname,
                     };
-                    Firestore.instance.collection('nyangstar').document().setData(nyangstainfo);
+
+                    Map<String, dynamic> nyangstainfosend = {
+                      'nyangstaProfileUrl': tabrecord.profileUrl,
+                      'nyangstaNickName' : tabrecord.nickname,
+                    };
+
+                    Firestore.instance.collection('nyangstar').document(tabrecord.nickname).collection('nyangstaBoard').document().setData(nyangstainfo);
+                    Firestore.instance.collection('nyangstar').document(tabrecord.nickname).setData(nyangstainfosend);
                     Navigator.of(context).pop();
                 },
               ),

@@ -19,7 +19,7 @@ class _NyangStaPageState extends State<NyangStaPage>{
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text('냥 스 타', textAlign: TextAlign.center,),),
+        title: Center(child: Text('냥 스 타', textAlign: TextAlign.right,),),
         backgroundColor: Color(0xFFFFCA28),
         actions: <Widget>[
           IconButton(
@@ -54,12 +54,24 @@ class _NyangStaPageState extends State<NyangStaPage>{
     );
   }
 
+
   Widget _buildBody (BuildContext context){
     return StreamBuilder<QuerySnapshot> (
-        stream: Firestore.instance.collection('nyangstar').where('uid', isEqualTo: db.userUID)
+        stream: Firestore.instance.collection('nyangstar')
+            .document(tabrecord.nickname).collection('nyangstaBoard')
+            .where('compareNickName', isEqualTo: tabrecord.nickname)
             .orderBy('currentTime', descending: true).snapshots(),
         builder: (context, snapshot) {
-          return _buildList(context, snapshot.data.documents);
+          if (snapshot.data != null){
+            return _buildList(context, snapshot.data.documents);
+          }
+          else{
+            return Container(
+                child: Center(
+                  child: Text("Loading.."),
+                ),
+            );
+          }
         }
     );
   }
@@ -68,7 +80,7 @@ class _NyangStaPageState extends State<NyangStaPage>{
     return GridView.count(
       crossAxisCount: 1,
       padding: EdgeInsets.all(20),
-      childAspectRatio: 0.6 / 1.0,
+      childAspectRatio: 0.57 / 1.0,
       children: snapshot.map((data) => _buildListItem(context, data)).toList(),
     );
   }
@@ -91,6 +103,7 @@ class _NyangStaPageState extends State<NyangStaPage>{
             Padding(
               padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
@@ -100,49 +113,101 @@ class _NyangStaPageState extends State<NyangStaPage>{
                       shape: BoxShape.circle,
                       image: DecorationImage(
                         fit: BoxFit.fill,
-                        image: NetworkImage(record.nyangImageUrl),
+                        image: NetworkImage(tabrecord.profileUrl),
                       ),
                     ),
                   ),
 
 
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 25, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(0, 25, 0, 0),
                     child: Container(
                       child: Text(
                         '${tabrecord.nickname}',
                       ),
                     ),
                   ),
+                  
+                  
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(80, 0, 0, 0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        Container(
+                          child:  IconButton(
+                              icon: Icon(Icons.more_horiz,
+                                  color: Colors.grey,
+                                  size: 30.0),
+                              onPressed: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (context) =>
+                                    EditNyangstaPage(record: record)));
+                              }
+                          ),
+                        ),
+                        
+                        Container(
+                            child: _isUser() ?
+                            IconButton(
+                              icon: Icon(Icons.delete,
+                                color: Colors.grey,
+                                size: 20.0,
+                              ),
+                              onPressed: (){
+                                return showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return Theme(
+                                      data: Theme.of(context).copyWith(dialogBackgroundColor: Color(0xFFFFDF7E)),
+                                      child: AlertDialog(
+                                        title: Text("삭제하시겠습니까?",
+                                          style: TextStyle(
+                                            fontSize: 18.0,
+                                          ),),
+                                        actions: <Widget>[
+                                          Row(
+                                            children: <Widget>[
+                                              RaisedButton(
+                                                child: Text('취소',
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                    )),
+                                                color: Color(0xFF5D4037),
+                                                onPressed: (){
+                                                  Navigator.of(context).pop();
+                                                },
+                                              ),
 
-                  SizedBox(width: 100.0,),
+                                              SizedBox(width: 5.0,),
 
-                  Container(
-                    child:  IconButton(
-                        icon: Icon(Icons.more_horiz,
-                            color: Colors.grey,
-                            size: 30.0),
-                        onPressed: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) =>
-                              EditNyangstaPage(record: record)));
-                        }
+                                              RaisedButton(
+                                                child: Text('확인',
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                  ),),
+                                                color: Color(0xFF5D4037),
+                                                onPressed: (){
+                                                  record.reference.delete();
+                                                  Navigator.of(context).pop();
+                                                },
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            )
+                                :
+                            null
+                        ),
+                      ],
                     ),
                   ),
 
-                  Container(
-                    child: _isUser() ?
-                    IconButton(
-                        icon: Icon(Icons.delete,
-                        color: Colors.grey,
-                        size: 20.0,
-                      ),
-                      onPressed: (){
-                          record.reference.delete();
-                      },
-                    )
-                        :
-                        null
-                  ),
+
                 ],
               ),
             ),
@@ -150,7 +215,7 @@ class _NyangStaPageState extends State<NyangStaPage>{
             SizedBox(height: 10.0,),
 
             AspectRatio(
-              aspectRatio: 60.0 / 60.0,
+              aspectRatio: 65.0 / 50.0,
               child: Image(
                 image: NetworkImage(record.nyangImageUrl),
                 width: 600, height: 600, fit: BoxFit.fitWidth,
@@ -158,7 +223,7 @@ class _NyangStaPageState extends State<NyangStaPage>{
             ),
 
             Padding(
-              padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+              padding: const EdgeInsets.fromLTRB(8, 10, 8, 0),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -202,6 +267,7 @@ class _NyangStaPageState extends State<NyangStaPage>{
                     },
                   ),
 
+
                   Container(
                     child: record.isCommand ?
                     IconButton(
@@ -218,45 +284,25 @@ class _NyangStaPageState extends State<NyangStaPage>{
                         null,
                   ),
 
-                  SizedBox(width: 120.0,),
 
-                  Container(
-                    padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-                    child: Text(
-                      '${record.curruentTime.toDate().year.toString()
-                          +"/"
-                          +record.curruentTime.toDate().month.toString()
-                          +"/"
-                          +record.curruentTime.toDate().day.toString()
-                          +"  "
-                          +record.curruentTime.toDate().hour.toString()
-                          +":"
-                          +record.curruentTime.toDate().minute.toString()
-                          }',
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 12.0,
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),
 
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+              padding: const EdgeInsets.fromLTRB(20, 10, 0, 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
                     '${tabrecord.nickname}',
                     style: TextStyle(
-                      fontSize: 15.0,
+                      fontSize: 17.0,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
 
-                  SizedBox(height: 5.0,),
+                  SizedBox(height: 10.0,),
 
                   Text(
                     '${record.write}',
@@ -269,7 +315,7 @@ class _NyangStaPageState extends State<NyangStaPage>{
             ),
 
             Padding(
-              padding: const EdgeInsets.fromLTRB(20, 30, 0, 0),
+              padding: const EdgeInsets.fromLTRB(20, 80, 0, 0),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -288,6 +334,26 @@ class _NyangStaPageState extends State<NyangStaPage>{
                     ),
                   ),
                 ],
+              ),
+            ),
+
+            Container(
+              padding: const EdgeInsets.fromLTRB(20, 20, 0, 0),
+              child: Text(
+                '${record.curruentTime.toDate().year.toString()
+                    +"."
+                    +record.curruentTime.toDate().month.toString()
+                    +"."
+                    +record.curruentTime.toDate().day.toString()
+                    +"  "
+                    +record.curruentTime.toDate().hour.toString()
+                    +":"
+                    +record.curruentTime.toDate().minute.toString()
+                }',
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 12.0,
+                ),
               ),
             ),
           ],

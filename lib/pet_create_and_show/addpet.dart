@@ -67,15 +67,10 @@ class _AddPetPageState extends State<AddPetPage>{
       _curEmail = _currentUser.email;
       print("uid:" + _curUID);
     }));
+
+
   }
 
-
-
-  FirebaseUser currentUser;
-  void getUID() async {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    currentUser = await _auth.currentUser();
-  }
 
   Future getImage() async {
     print("실행");
@@ -175,6 +170,7 @@ class _AddPetPageState extends State<AddPetPage>{
                     'email' : _curEmail,
                     'image': imageUrl,
                     'uid' : _curUID,
+                    'profileUrl': imageUrl,
                   });
               _nameController.clear();
               _nickController.clear();

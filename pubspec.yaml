@@ -17,7 +17,10 @@ dependencies:
   intl:
   image_picker:
   firebase_storage:
+<<<<<<< HEAD
 
+=======
+>>>>>>> 10e60d2feeb75dcc2815b0d944c9196e87e22bac
 dev_dependencies:
   flutter_test:
     sdk: flutter

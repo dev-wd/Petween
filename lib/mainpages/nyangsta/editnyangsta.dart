@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:petween/model/db.dart' as db;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io';
+import 'package:petween/tab.dart';
 
 class EditNyangstaPage extends StatefulWidget {
   db.nyangsta record;
@@ -112,7 +113,9 @@ class _EditNyangstaPageState extends State<EditNyangstaPage>{
 
   Widget _buildBody(BuildContext context){
     return StreamBuilder<DocumentSnapshot>(
-      stream: Firestore.instance.collection('nyangstar').document(record.documentID).snapshots(),
+      stream: Firestore.instance.collection('nyangstar').document(tabrecord.nickname)
+          .collection('nyangstaBoard').document(record.nyangstaDocumentID)
+          .snapshots(),
       builder: (context, snapshot){
         if (!snapshot.hasData) return LinearProgressIndicator();
         return _buildEdit(context, snapshot.data);
