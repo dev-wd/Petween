@@ -17,6 +17,8 @@ import 'package:petween/mainpages/nyangtodo/addtodo.dart';
 import 'package:petween/mainpages/nyanggaebu/listadd.dart';
 import 'package:petween/mainpages/nyangsta/searchnyangsta.dart';
 import 'package:petween/mainpages/nyangsta/chatnyangsta.dart';
+import 'package:petween/mainpages/alarm.dart';
+
 class PetweenApp extends StatelessWidget {
 
   @override
@@ -25,6 +27,7 @@ class PetweenApp extends StatelessWidget {
       title: 'Shrine',
       home: PreloginPage(),
       routes: <String, WidgetBuilder>{
+        '/alarm': (BuildContext context) => AlarmPage(),
         '/login': (BuildContext context) => LoginPage(),
         '/catchoice': (BuildContext context) => ProfileCreatePage(),
         '/setting': (BuildContext context) => SettingPage(),

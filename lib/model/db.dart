@@ -7,7 +7,6 @@ String userEmail;
 FirebaseUser user;
 File image;
 String userNickName;
-
 List<String> kindCat = ['노르웨이숲고양이','데본렉스','라가머핀','리팜','랙돌','러시안블루','맹크스고양이','메인쿤','발리네즈','버만','버마즈','봄베이','시베리아고양이','샴고양이','셀커크렉스','소말리','스코티시폴드','스핑크스','싱갸퓨라','아메리칸밤테일'];
 
 class db {
@@ -28,6 +27,7 @@ class db {
   String title; //QNA 제목
   String info; //QNA 내용
   String url;
+  List<dynamic> alarm;
   final DocumentReference reference;
 
   db.fromMap(Map<String, dynamic> map, String docID, {this.reference})
@@ -52,6 +52,8 @@ class db {
         kind = map['kind'],
         nickname = map['nickname'],
         petname = map['petname'],
+        image = map['image'],
+        alarm = map['alarm'],
         uid = map['uid'];
 
   db.fromSnapshot(DocumentSnapshot snapshot)
@@ -148,21 +150,62 @@ class nyangsta {
 class todo {
   String work;
   bool isdone;
+  bool isdue;
+  String duemonth;
+  String dueday;
+  String duehour;
+  String duemin;
+
   final DocumentReference reference;
 
   todo.fromMap(Map<String, dynamic> map, String docID, {this.reference})
       : assert(map['work'] != null),
         assert(map['isdone'] != null),
+        assert(map['isdue'] != null),
         work = map['work'],
-        isdone = map['isdone'];
+        isdone = map['isdone'],
+        isdue = map['isdue'],
+        duemonth = map['duemonth'],
+        dueday = map['dueday'],
+        duehour = map['duehour'],
+        duemin = map['duemin'];
   todo.fromSnapshot(DocumentSnapshot snapshot)
       :this.fromMap(snapshot.data, snapshot.documentID, reference: snapshot.reference);
 
   @override
-  String toString() => "todo<$work:$isdone>";
+  String toString() => "todo<$work:$isdone:$isdue:$duemonth:$dueday:$duehour:$duemin>";
 
 }
 
+class Isdue {
+  String work;
+  bool isdone;
+  bool isdue;
+  String duemonth;
+  String dueday;
+  String duehour;
+  String duemin;
+
+  final DocumentReference reference;
+
+  Isdue.fromMap(Map<String, dynamic> map, String docID, {this.reference})
+      : assert(map['work'] != null),
+        assert(map['isdone'] != null),
+        assert(map['isdue'] != null),
+        work = map['work'],
+        isdone = map['isdone'],
+        isdue = map['isdue'],
+        duemonth = map['duemonth'],
+        dueday = map['dueday'],
+        duehour = map['duehour'],
+        duemin = map['duemin'];
+  Isdue.fromSnapshot(DocumentSnapshot snapshot)
+      :this.fromMap(snapshot.data, snapshot.documentID, reference: snapshot.reference);
+
+  @override
+  String toString() => "todo<$work:$isdone:$isdue:$duemonth:$dueday:$duehour:$duemin>";
+
+}
 
 class qna{
   String info;

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:petween/model/db.dart' as db;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:petween/tab.dart';
 
 
 class AddNyangStaPage extends StatefulWidget {
@@ -79,21 +80,22 @@ class _AddNyangStaPageState extends State<AddNyangStaPage>{
                           fontWeight: FontWeight.bold)),
                 ),
                 onTap: (){
-                    Map<String, dynamic> nyangstainfo = {
-                      'nyangImageUrl': url,
-                      'currentTime': ctime,
-                      'uid': db.userUID,
-                      'likeNum': 0,
-                      'write' : _contentController.text,
-                      'liker' :[],
-                      'isLike' : false,
-                      'chatNum' : 0,
-                      'chatUser' : [],
-                      'selfCommand' : [],
-                      'isCommand': _isCommand,
-                    };
-                    Firestore.instance.collection('nyangstar').document().setData(nyangstainfo);
-                    Navigator.of(context).pop();
+                  Map<String, dynamic> nyangstainfo = {
+                    'nyangImageUrl': url,
+                    'currentTime': ctime,
+                    'uid': db.userUID,
+                    'likeNum': 0,
+                    'write' : _contentController.text,
+                    'liker' :[],
+                    'isLike' : false,
+                    'chatNum' : 0,
+                    'chatUser' : [],
+                    'selfCommand' : [],
+                    'isCommand': _isCommand,
+                    'compareNickName' :tabrecord.nickname,
+                  };
+                  Firestore.instance.collection('nyangstar').document(tabrecord.nickname).collection('nyangstaBoard').document().setData(nyangstainfo);
+                  Navigator.of(context).pop();
                 },
               ),
             ),
@@ -102,53 +104,53 @@ class _AddNyangStaPageState extends State<AddNyangStaPage>{
         body:
         ListView(
           children: <Widget>[
-           Column(
-             crossAxisAlignment: CrossAxisAlignment.start,
-             children: <Widget>[
-               Padding(
-                 padding: EdgeInsets.fromLTRB(20, 40, 0, 0),
-                 child: FlatButton(
-                     child: db.image == null ?
-                     Image.asset('assets/nyangsta.png',
-                       width: 150.0, height: 150.0, fit: BoxFit.scaleDown,)
-                         :
-                     Image.file(db.image, width: 150.0, height: 150.0, fit: BoxFit.scaleDown),
-                     onPressed: () {
-                       getImage();
-                     },
-                 ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.fromLTRB(20, 40, 0, 0),
+                  child: FlatButton(
+                    child: db.image == null ?
+                    Image.asset('assets/nyangsta.png',
+                      width: 150.0, height: 150.0, fit: BoxFit.scaleDown,)
+                        :
+                    Image.file(db.image, width: 150.0, height: 150.0, fit: BoxFit.scaleDown),
+                    onPressed: () {
+                      getImage();
+                    },
+                  ),
                 ),
 
-             ],
-           ),
+              ],
+            ),
 
 
             Padding(
               padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  TextField (
-                    controller:_contentController,
-                    decoration: InputDecoration(
-                      filled: false,
-                      hintText: '문구 입력..',
-                      fillColor: Color(0x00000000),
-                      contentPadding: EdgeInsets.symmetric(vertical:70.0),
-                      labelStyle: TextStyle(
-                        color: Color(0x00000000),
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    TextField (
+                      controller:_contentController,
+                      decoration: InputDecoration(
+                          filled: false,
+                          hintText: '문구 입력..',
+                          fillColor: Color(0x00000000),
+                          contentPadding: EdgeInsets.symmetric(vertical:70.0),
+                          labelStyle: TextStyle(
+                            color: Color(0x00000000),
+                          ),
+                          border: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.grey,
+                            ),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide:  BorderSide(color: Colors.grey),
+                          )
                       ),
-                      border: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Colors.grey,
-                        ),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide:  BorderSide(color: Colors.grey),
-                      )
                     ),
-                  ),
-                ]
+                  ]
               ),
             ),
 
@@ -187,7 +189,7 @@ class _AddNyangStaPageState extends State<AddNyangStaPage>{
                     onChanged: _onChanged1,
                     activeColor: Colors.redAccent,
                   ),
-               ],
+                ],
               ),
             ),
           ],
