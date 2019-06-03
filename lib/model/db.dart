@@ -6,7 +6,6 @@ String userUID;
 String userEmail;
 FirebaseUser user;
 File image;
-String userNickName;
 
 List<String> kindCat = ['노르웨이숲고양이','데본렉스','라가머핀','리팜','랙돌','러시안블루','맹크스고양이','메인쿤','발리네즈','버만','버마즈','봄베이','시베리아고양이','샴고양이','셀커크렉스','소말리','스코티시폴드','스핑크스','싱갸퓨라','아메리칸밤테일'];
 
@@ -24,7 +23,11 @@ class db {
   String uid;
   String nickname;
   String petname;
-
+  String image; //고양이 사진
+  String title; //QNA 제목
+  String info; //QNA 내용
+  String url;
+  String profileUrl;
   final DocumentReference reference;
 
   db.fromMap(Map<String, dynamic> map, String docID, {this.reference})
@@ -49,13 +52,17 @@ class db {
         kind = map['kind'],
         nickname = map['nickname'],
         petname = map['petname'],
+        image = map['image'],
+        profileUrl = map['profileUrl'],
         uid = map['uid'];
+
   db.fromSnapshot(DocumentSnapshot snapshot)
       :this.fromMap(snapshot.data, snapshot.documentID, reference: snapshot.reference);
 
   @override
   String toString() => "db<$birthday:$birthmonth:$birthyear"
-      ":$meetyear:$meetmonth:$meetday:$gender:$kind:$nickname:$petname:$uid>";
+      ":$meetyear:$meetmonth:$meetday:$gender:$kind:$nickname:$petname:$uid"
+      ":$profileUrl>";
 
 }
 
@@ -111,15 +118,16 @@ class nyangsta {
   String write;
   List<dynamic> liker;
   String uid;
-  List<dynamic> selfCommand;
   int chatNum;
-  List<dynamic> chatUser;
-  String documentID;
+  String nyangstaDocumentID;
+  String compareNickName;
+
 
   final DocumentReference reference;
 
   nyangsta.fromMap(Map<String, dynamic> map, String docID, {this.reference})
       : assert(map['nyangImageUrl'] != null),
+        assert(map['compareNickName'] != null),
         isCommand = map['isCommand'],
         nyangImageUrl = map['nyangImageUrl'],
         curruentTime = map['currentTime'],
@@ -128,15 +136,113 @@ class nyangsta {
         liker = map['liker'],
         isLike = map['isLike'],
         uid = map['uid'],
-        chatUser = map['chatUser'],
         chatNum = map['chatNum'],
-        selfCommand = map['selfCommand'],
-        documentID = docID;
+        nyangstaDocumentID = docID,
+        compareNickName = map['compareNickName'];
 
 
   nyangsta.fromSnapshot(DocumentSnapshot snapshot)
       :this.fromMap(snapshot.data, snapshot.documentID, reference: snapshot.reference);
 
   @override
-  String toString() => "nyangsta<$isCommand:$write:$nyangImageUrl:$curruentTime:$liker:$likeNum:$isLike:$uid:$chatUser:$selfCommand:$chatNum>";
+  String toString() => "nyangsta<$isCommand:$write:$nyangImageUrl:$curruentTime:$liker:$likeNum:$isLike:$uid>";
+
+}
+
+
+class nyangstainfo {
+  String nyangstaNickName;
+  String nyangstaProfileUrl;
+
+  final DocumentReference reference;
+
+  nyangstainfo.fromMap(Map<String, dynamic> map, String docID, {this.reference})
+      : assert(map['nyangstaNickName'] != null),
+        assert(map['nyangstaProfileUrl'] != null),
+        nyangstaNickName = map['nyangstaNickName'],
+        nyangstaProfileUrl = map['nyangstaProfileUrl'];
+
+  nyangstainfo.fromSnapshot(DocumentSnapshot snapshot)
+      :this.fromMap(snapshot.data, snapshot.documentID, reference: snapshot.reference);
+
+  @override
+  String toString() => "nyangstainfo<$nyangstaNickName:$nyangstaProfileUrl>";
+}
+
+
+class nyangchat {
+  String avatarUrl;
+  String chatUser;
+  Timestamp commendTime;
+  String commend;
+  String chatDocumentID;
+  bool dumy;
+
+  final DocumentReference reference;
+
+  nyangchat.fromMap(Map<String, dynamic> map, String docID, {this.reference})
+      : assert(map['avatarUrl'] != null),
+        assert(map['chatUser'] != null),
+        assert(map['commendTime'] != null),
+        avatarUrl = map['avatarUrl'],
+        chatUser = map['chatUser'],
+        commendTime = map['commendTime'],
+        chatDocumentID = map['chatDocumentID'],
+        commend = map['commend'],
+        dumy = map['dumy'];
+  nyangchat.fromSnapshot(DocumentSnapshot snapshot)
+      :this.fromMap(snapshot.data, snapshot.documentID, reference: snapshot.reference);
+
+  @override
+  String toString() => "nyangchat<$avatarUrl:$chatUser:$commendTime:$commend:$dumy>";
+
+}
+
+class qna{
+  String info;
+  String title;
+  bool isexpanded;
+  final DocumentReference reference;
+
+  qna.fromMap(Map<String, dynamic> map, String docID, {this.reference})
+      : assert(map['info'] != null),
+        assert(map['title'] != null),
+        assert(map['isexpanded']!=null),
+        info = map['info'],
+        title = map['title'],
+        isexpanded = map['isexpanded'];
+  qna.fromSnapshot(DocumentSnapshot snapshot)
+      :this.fromMap(snapshot.data, snapshot.documentID, reference: snapshot.reference);
+
+  @override
+  String toString() => "qna<$info:$title:$isexpanded>";
+}
+
+class todo {
+  String work;
+  bool isdone;
+  bool isdue;
+  String duemonth;
+  String dueday;
+  String duehour;
+  String duemin;
+  final DocumentReference reference;
+
+  todo.fromMap(Map<String, dynamic> map, String docID, {this.reference})
+      : assert(map['work'] != null),
+        assert(map['isdone'] != null),
+        assert(map['isdue'] != null),
+        work = map['work'],
+        isdone = map['isdone'],
+        isdue = map['isdue'],
+        duemonth = map['duemonth'],
+        dueday = map['dueday'],
+        duehour = map['duehour'],
+        duemin = map['duemin'];
+  todo.fromSnapshot(DocumentSnapshot snapshot)
+      :this.fromMap(snapshot.data, snapshot.documentID, reference: snapshot.reference);
+
+  @override
+  String toString() => "todo<$work:$isdone:$isdue:$duemonth:$dueday:$duehour:$duemin>";
+
 }

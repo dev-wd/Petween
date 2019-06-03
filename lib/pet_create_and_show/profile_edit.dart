@@ -1,38 +1,72 @@
+import 'dart:io';
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:petween/model/db.dart' as db;
+import 'package:petween/tab.dart';
+import 'package:petween/model/db.dart';
 
 var _nameController = TextEditingController();
 var _nickController = TextEditingController();
-int _gender = null;
-String _birthyear = null;
-String _birthmonth = null;
-String _birthday = null;
-String _meetyear = null;
-String _meetmonth = null;
-String _meetday = null;
-String _kindCat = null;
+int _gender;
+String _birthyear = tabrecord.birthyear;
+String _birthmonth = tabrecord.birthmonth;
+String _birthday = tabrecord.birthday;
+String _meetyear = tabrecord.meetyear;
+String _meetmonth = tabrecord.meetmonth;
+String _meetday = tabrecord.meetday;
+String _kindCat = tabrecord.kind;
 List<DropdownMenuItem<String>> dropyear = [];
 List<DropdownMenuItem<String>> dropmonth = [];
 List<DropdownMenuItem<String>> dropday = [];
 List<DropdownMenuItem<String>> dropkind = [];
 List<String> gender= ['남','여','중성'];
+String imageUrl = 'https://screenshotlayer.com/images/assets/placeholder.png';
 
 class ProfileEditPage extends StatefulWidget {
-  db.db record;
-  ProfileEditPage({Key key, this.record}) : super(key: key);
   @override
-  _ProfileEditPageState createState() => new _ProfileEditPageState(record: record);
+  _ProfileEditPageState createState() => new _ProfileEditPageState();
 }
 
 class _ProfileEditPageState extends State<ProfileEditPage>{
   db.db record;
-  _ProfileEditPageState({this.record});
+  File _image;
+  String imageUrl = 'https://screenshotlayer.com/images/assets/placeholder.png';
+  var _curUserDocument;
+  FirebaseUser _currentUser;
+  var _recordinfo;
+  String _curUID;
+  String _curEmail;
+
+  Future<FirebaseUser> _getUID() async {
+    final FirebaseAuth _auth = FirebaseAuth.instance;
+    FirebaseUser _currentUsersemi = await _auth.currentUser();
+    _curUID = _currentUsersemi.uid.toString();
+
+    _curUserDocument = await Firestore.instance
+        .collection('information')
+        .document(_curUID)
+        .get();
+    _recordinfo = information.fromSnapshot(_curUserDocument);
+    return _currentUsersemi;
+  }
 
   @override
   void initState(){
-    //_nameController = TextEditingController(text: record.name);
-    //_nickController = TextEditingController(text: record.nickname);
+    _getUID();
+    _nameController = TextEditingController(text: tabrecord.petname);
+    _nickController = TextEditingController(text: tabrecord.nickname);
+
+    if(tabrecord.gender=='남')
+      _gender = 0;
+    else if(tabrecord.gender == '여')
+      _gender = 1;
+    else
+      _gender = 2;
 
   }
   void loadData(){
@@ -65,6 +99,38 @@ class _ProfileEditPageState extends State<ProfileEditPage>{
     dropkind = db.kindCat.map((val) => DropdownMenuItem<String>(
       child: new Text(val), value: val,)).toList();
 
+
+    imageUrl = tabrecord.image;
+
+    print(tabrecord.image);
+
+  }
+
+  Future getImage() async {
+    print("실행");
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _image = image;
+    });
+    print(_image);
+    final String rand =
+        "${new Random().nextInt(10000)}${DateTime.now().millisecond}";
+
+    final StorageReference firebaseStorageRef =
+    FirebaseStorage.instance.ref().child('addpet').child('myimage.jpg');
+    final StorageUploadTask task =
+    firebaseStorageRef.putFile(_image);
+
+    await (await task.onComplete)
+        .ref
+        .getDownloadURL()
+        .then((dynamic url) {
+      setState(() {
+        imageUrl= url;
+        _image = null;
+      });}
+    );
   }
 
   @override
@@ -85,10 +151,11 @@ class _ProfileEditPageState extends State<ProfileEditPage>{
           FlatButton(
             child: Text('확인'),
             onPressed:(){
-              record.reference.updateData(
+              print(_nameController);
+              Firestore.instance.collection('pet').document(tabrecord.petname+tabrecord.uid).updateData(
                   {
-                    'username': record.userName,
-                    'petname' : _nameController,
+                    'username': tabrecord.userName,
+                    'petname' : _nameController.text,
                     'kind' : _kindCat,
                     'birthyear' : _birthyear,
                     'birthmonth' : _birthmonth,
@@ -97,11 +164,12 @@ class _ProfileEditPageState extends State<ProfileEditPage>{
                     'meetyear' : _meetyear,
                     'meetmonth' : _meetmonth,
                     'meetday' : _meetday,
-                    'nickname' : _nickController,
-                    'email' : db.userEmail,
+                    'nickname' : _nickController.text,
+                    'email' : tabrecord.email,
+                    'image': imageUrl,
                   });
               Navigator.pop(context);
-              Navigator.of(context).pushNamed('/setting');
+              Navigator.of(context).pushNamed('/tab');
             },
           )
         ],
@@ -109,10 +177,12 @@ class _ProfileEditPageState extends State<ProfileEditPage>{
       body: _buildBody(context),
     );
   }
+
+
   Widget _buildBody(BuildContext context){
     return StreamBuilder<DocumentSnapshot>(
       stream: Firestore.instance.
-      collection('pet').document(record.petname).snapshots(),
+      collection('pet').document(tabrecord.petname+tabrecord.uid).snapshots(),
       builder: (context,snapshot){
         if(!snapshot.hasData) return LinearProgressIndicator();
 
@@ -130,12 +200,12 @@ class _ProfileEditPageState extends State<ProfileEditPage>{
         SizedBox(height:10.0),
         Column(
           children: <Widget>[
-            //Image.network()
-            SizedBox(height: 16.0,)
+            Image.network(imageUrl, fit: BoxFit.fill),
+            SizedBox(height: 16.0),
           ],
         ),
         FlatButton(
-          //onPressed: ,
+          onPressed:(){getImage();},
           child: Icon(Icons.add_a_photo),
         ),
         Column(
@@ -168,7 +238,9 @@ class _ProfileEditPageState extends State<ProfileEditPage>{
                     items: dropyear,
                     hint: Text('출생년도'),
                     onChanged: (value){
-                      _birthyear=value;
+                      setState(() {
+                        _birthyear = value;
+                      });
                     },
                   ),
                 ),
@@ -178,7 +250,9 @@ class _ProfileEditPageState extends State<ProfileEditPage>{
                   items: dropmonth,
                   hint: Text('출생월'),
                   onChanged: (value){
-                    _birthmonth=value;
+                    setState(() {
+                      _birthmonth = value;
+                    });
                   },
                 ),
                 SizedBox(width: 16.0,),
@@ -187,7 +261,9 @@ class _ProfileEditPageState extends State<ProfileEditPage>{
                   items: dropday,
                   hint: Text('출생일'),
                   onChanged: (value){
-                    _birthday=value;
+                    setState(() {
+                      _birthday = value;
+                    });
                   },
                 ),
               ],
@@ -203,7 +279,9 @@ class _ProfileEditPageState extends State<ProfileEditPage>{
               items: dropkind,
               hint: Text('고양이종류'),
               onChanged: (value){
-                _kindCat = value;
+                setState(() {
+                  _kindCat = value;
+                });
               },
             ),
           ],
@@ -218,25 +296,31 @@ class _ProfileEditPageState extends State<ProfileEditPage>{
                 Radio(
                   value: 0,
                   groupValue:_gender,
-                  onChanged: (int value){setState(){
-                    _gender = value;
-                  }},
+                  onChanged: (int value){
+                    setState(() {
+                      _gender = value;
+                    });
+                  },
                 ),
                 Text('남'),
                 Radio(
                   value: 1,
                   groupValue:_gender,
-                  onChanged: (int value){setState(){
-                    _gender = value;
-                  }},
+                  onChanged: (int value){
+                    setState(() {
+                      _gender = value;
+                    });
+                  },
                 ),
                 Text('여'),
                 Radio(
                   value: 2,
                   groupValue:_gender,
-                  onChanged: (int value){setState(){
-                    _gender = value;
-                  }},
+                  onChanged: (int value){
+                    setState(() {
+                      _gender = value;
+                    });
+                  },
                 ),
                 Text('중성'),
               ],
@@ -256,7 +340,9 @@ class _ProfileEditPageState extends State<ProfileEditPage>{
                     items: dropyear,
                     hint: Text('만난연도'),
                     onChanged: (value){
-                      _meetyear=value;
+                      setState(() {
+                        _meetyear = value;
+                      });
                     },
                   ),
                 ),
@@ -266,7 +352,9 @@ class _ProfileEditPageState extends State<ProfileEditPage>{
                   items: dropmonth,
                   hint: Text('출생월'),
                   onChanged: (value){
-                    _meetmonth=value;
+                    setState(() {
+                      _meetmonth=value;
+                    });
                   },
                 ),
                 SizedBox(width: 16.0,),
@@ -275,7 +363,9 @@ class _ProfileEditPageState extends State<ProfileEditPage>{
                   items: dropday,
                   hint: Text('출생일'),
                   onChanged: (value){
-                    _meetday=value;
+                    setState(() {
+                      _meetday=value;
+                    });
                   },
                 ),
               ],
@@ -286,4 +376,3 @@ class _ProfileEditPageState extends State<ProfileEditPage>{
     );
   }
 }
-

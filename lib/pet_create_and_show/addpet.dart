@@ -67,15 +67,10 @@ class _AddPetPageState extends State<AddPetPage>{
       _curEmail = _currentUser.email;
       print("uid:" + _curUID);
     }));
+
+
   }
 
-
-
-  FirebaseUser currentUser;
-  void getUID() async {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
-    currentUser = await _auth.currentUser();
-  }
 
   Future getImage() async {
     print("실행");
@@ -89,7 +84,7 @@ class _AddPetPageState extends State<AddPetPage>{
         "${new Random().nextInt(10000)}${DateTime.now().millisecond}";
 
     final StorageReference firebaseStorageRef =
-    FirebaseStorage.instance.ref().child('product').child('myimage.jpg');
+    FirebaseStorage.instance.ref().child('addpet').child('myimage.jpg');
     final StorageUploadTask task =
     firebaseStorageRef.putFile(_image);
 
@@ -175,11 +170,12 @@ class _AddPetPageState extends State<AddPetPage>{
                     'email' : _curEmail,
                     'image': imageUrl,
                     'uid' : _curUID,
+                    'profileUrl': imageUrl,
                   });
               _nameController.clear();
               _nickController.clear();
               Navigator.pop(context);
-              Navigator.of(context).pushNamed('/home');
+              Navigator.of(context).pushNamed('/tab');
 
               /*
                 Navigator.of(context).push(MaterialPageRoute(

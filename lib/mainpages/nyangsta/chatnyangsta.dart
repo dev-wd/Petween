@@ -1,137 +1,211 @@
-import 'dart:async';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:petween/model/db.dart' as db;
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:petween/model/db.dart';
 import 'package:petween/tab.dart';
 
-
 class ChatNyangstaPage extends StatefulWidget {
-  db.nyangsta record;
+  nyangsta record;
   ChatNyangstaPage({Key key, this.record}) : super(key: key);
   @override
   _ChatNyangstaPageState createState() => new _ChatNyangstaPageState(record: record);
 }
 
 class _ChatNyangstaPageState extends State<ChatNyangstaPage>{
-  db.nyangsta record;
+  nyangsta record;
   _ChatNyangstaPageState({this.record});
 
-  final TextEditingController _chatController = new TextEditingController();
+  bool _isComposing = false;
+  DateTime ctime;
+  String input;
 
+  final TextEditingController _commandController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Scaffold(
-        appBar: AppBar(
-          title: Text('댓글'),
-          backgroundColor: Color(0xFFFFCA28),
-          leading: Padding(
-            padding: const EdgeInsets.fromLTRB(15, 25, 0, 0),
-            child: GestureDetector(
-              onTap: (){
-                Navigator.of(context).pop();
-              },
-              child: Container(
-                  child: Text('취소',
-                      style: TextStyle(color: Colors.white, fontSize: 16.0,
-                          fontWeight: FontWeight.bold))),
-            ),
+      appBar: AppBar(
+        title: Text('댓글'),
+        backgroundColor: Color(0xFFFFCA28),
+        leading: Padding(
+          padding: const EdgeInsets.fromLTRB(15, 25, 0, 0),
+          child: GestureDetector(
+            onTap: (){
+              Navigator.of(context).pop();
+            },
+            child: Container(
+                child: Text('취소',
+                    style: TextStyle(color: Colors.white, fontSize: 16.0,
+                        fontWeight: FontWeight.bold))),
           ),
         ),
+      ),
 
-        body: _builderBody(context),
+      body: _buildBody(context),
     );
   }
 
-  Widget _builderBody(BuildContext context){
+  Widget _buildBody(BuildContext context){
     return StreamBuilder<DocumentSnapshot>(
-      stream: Firestore.instance.collection('nyangstar').document(record.documentID).snapshots(),
+      stream: Firestore.instance.collection('nyangstar')
+          .document(tabrecord.nickname).collection('nyangstaBoard')
+          .document(record.nyangstaDocumentID).snapshots(),
       builder: (context, snapshot){
         if (!snapshot.hasData) return LinearProgressIndicator();
-        return _buildChat(context, snapshot.data);
+
+        return _buildBodyList(context, snapshot.data);
       },
     );
   }
 
-  Widget _buildChat(context, DocumentSnapshot data){
-    final record = db.nyangsta.fromSnapshot(data);
+  Widget _buildBodyList(BuildContext context, DocumentSnapshot data){
+    final record = nyangsta.fromSnapshot(data);
 
-    void _handleSubmit(String text){
-      _chatController.clear();
-
-      setState(() {
-        List l = [];
-        l.add(_chatController.text);
-
-        record.reference.updateData({
-        'chatNum' : record.chatNum+1,
-          'chatUser': l,
-        });
-      });
-    }
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Flexible(
-            child: ListView.builder(
-              padding: EdgeInsets.all(8.0),
-              reverse: true,
-              itemBuilder: (_, int index) => record.chatUser[index],
-              itemCount: record.chatUser.length,
-            )
-        ),
-        new Divider(
-          height: 1.0,
-        ),
+        Expanded(
+          child: StreamBuilder<QuerySnapshot>(
+            stream: Firestore.instance.collection('nyangstar')
+                .document(tabrecord.nickname).collection('nyangstaBoard')
+                .document(record.nyangstaDocumentID)
+                .collection('nyangcomments').where('dumy', isEqualTo: true)
+                .orderBy('commendTime', ).snapshots(),
+            builder: (BuildContext context, AsyncSnapshot snapshot){
 
-        Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).cardColor,
+              if (snapshot.data != null){
+                return ListView.builder(
+                    itemCount: snapshot.data.documents.length,
+                    itemBuilder: (context, i){
+                      final crecord = nyangchat.fromSnapshot(snapshot.data.documents[i]);
+                      return Dismissible(
+
+                          key: Key(crecord.toString()),
+
+                          onDismissed: (direction) {
+                            setState(() {
+                              crecord.reference.delete();
+                              record.reference.updateData({'chatNum' : record.chatNum - 1});
+                            });
+                          },
+                          background: Container(color: Colors.red),
+                          child:  _buildChat(context, snapshot.data.documents[i]),
+                      );
+                    }
+                );
+              }
+              else{
+                return Container(
+                  child: Center(
+                    child: Text("Loading.."),
+                  ),
+                );
+              }
+            },
+          ),
+        ),
+        Divider(),
+
+        ListTile(
+          title: TextField(
+            controller: _commandController,
+            onChanged: (String text){
+              setState(() {
+                _isComposing = text.length > 0;
+              });
+            },
+            decoration: InputDecoration(
+              hintText: '댓글 달기...',
             ),
-            child:  ListView(
-              children: <Widget>[
-                Container(
-                    margin: EdgeInsets.symmetric(vertical: 10.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          margin: EdgeInsets.only(right: 16.0),
-                          child: Container(
-                            width: 50.0,
-                            height: 50.0,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                fit: BoxFit.fill,
-                                image: NetworkImage(record.nyangImageUrl),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              '${tabrecord.nickname}',
-                              style: Theme.of(context).textTheme.subhead,
-                            ),
-//                  Container(
-//                    margin: EdgeInsets.only(top: 5.0),
-//                    child: Text(text),
-//                  ),
-                          ],
-                        )
-                      ],
-                    )
-                ),
-              ],
-            ),
+          ),
+          leading: CircleAvatar(
+            backgroundImage: NetworkImage(tabrecord.profileUrl),
+          ),
+          trailing: IconButton(
+            onPressed: (){
+
+              Firestore.instance.collection('nyangstar')
+                  .document(tabrecord.nickname).collection('nyangstaBoard')
+                  .document(record.nyangstaDocumentID)
+                  .collection('nyangcomments').document(tabrecord.nickname + _commandController.text)
+                  .setData({
+                'chatUser': tabrecord.nickname,
+                'avatarUrl': tabrecord.profileUrl,
+                'commendTime': ctime = DateTime.now(),
+                'commend': _commandController.text,
+                'dumy' : true,
+              });
+
+              setState(() {
+                record.reference.updateData({'chatNum' : record.chatNum + 1});
+              });
+
+              _commandController.clear();
+            },
+            icon: _isComposing ? Icon(Icons.send, color: Color(0xFFFFDF7E))
+                : Icon(Icons.send, color: Colors.grey),
+          ),
         ),
       ],
     );
+  }
 
+  Widget _buildChat(BuildContext context, DocumentSnapshot data){
+    final chatrecord = nyangchat.fromSnapshot(data);
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        ListTile(
+          leading: CircleAvatar(
+            backgroundImage: NetworkImage(chatrecord.avatarUrl),
+          ),
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                '${chatrecord.chatUser}',
+                style: TextStyle(
+                  fontSize: 13.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+
+              SizedBox(height: 5.0,),
+
+              Text(
+                '${chatrecord.commend}',
+                style: TextStyle(
+                  fontSize: 10.0,
+                ),
+              ),
+
+              SizedBox(height: 7.0,),
+
+              Container(
+                padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+                child: Text(
+                  '${chatrecord.commendTime.toDate().year.toString()
+                      +"/"
+                      +chatrecord.commendTime.toDate().month.toString()
+                      +"/"
+                      +chatrecord.commendTime.toDate().day.toString()
+                      +"  "
+                      +chatrecord.commendTime.toDate().hour.toString()
+                      +":"
+                      +chatrecord.commendTime.toDate().minute.toString()
+                  }',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 8.0,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        )
+      ],
+    );
   }
 }
