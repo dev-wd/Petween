@@ -26,8 +26,6 @@ class db {
   String image; //고양이 사진
   String title; //QNA 제목
   String info; //QNA 내용
-  String url;
-  String profileUrl;
   final DocumentReference reference;
 
   db.fromMap(Map<String, dynamic> map, String docID, {this.reference})
@@ -53,7 +51,6 @@ class db {
         nickname = map['nickname'],
         petname = map['petname'],
         image = map['image'],
-        profileUrl = map['profileUrl'],
         uid = map['uid'];
 
   db.fromSnapshot(DocumentSnapshot snapshot)
@@ -61,8 +58,7 @@ class db {
 
   @override
   String toString() => "db<$birthday:$birthmonth:$birthyear"
-      ":$meetyear:$meetmonth:$meetday:$gender:$kind:$nickname:$petname:$uid"
-      ":$profileUrl>";
+      ":$meetyear:$meetmonth:$meetday:$gender:$kind:$nickname:$petname:$uid>";
 
 }
 

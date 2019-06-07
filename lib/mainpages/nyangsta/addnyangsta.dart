@@ -94,7 +94,7 @@ class _AddNyangStaPageState extends State<AddNyangStaPage>{
                     };
 
                     Map<String, dynamic> nyangstainfosend = {
-                      'nyangstaProfileUrl': tabrecord.profileUrl,
+                      'nyangstaProfileUrl': tabrecord.image,
                       'nyangstaNickName' : tabrecord.nickname,
                     };
 
