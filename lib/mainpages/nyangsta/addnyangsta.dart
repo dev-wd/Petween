@@ -79,23 +79,23 @@ class _AddNyangStaPageState extends State<AddNyangStaPage>{
                       style: TextStyle(color: Color(0xFFFF5A5A), fontSize: 16.0,
                           fontWeight: FontWeight.bold)),
                 ),
-                onTap: (){
+                onTap: () {
                   Map<String, dynamic> nyangstainfo = {
-                    'nyangImageUrl': url,
-                    'currentTime': ctime,
-                    'uid': db.userUID,
-                    'likeNum': 0,
-                    'write' : _contentController.text,
-                    'liker' :[],
-                    'isLike' : false,
-                    'isCommand': _isCommand,
-                    'chatNum': 0,
-                    'compareNickName' :tabrecord.nickname,
+                  'nyangImageUrl': url,
+                  'currentTime': ctime,
+                  'uid': db.userUID,
+                  'likeNum': 0,
+                  'write' : _contentController.text,
+                  'liker' :[],
+                  'isLike' : false,
+                  'isCommand': _isCommand,
+                  'chatNum': 0,
+                  'compareNickName' :tabrecord.nickname,
                   };
 
                   Map<String, dynamic> nyangstainfosend = {
-                    'nyangstaProfileUrl': tabrecord.profileUrl,
-                    'nyangstaNickName' : tabrecord.nickname,
+                  'nyangstaProfileUrl': tabrecord.profileUrl,
+                  'nyangstaNickName' : tabrecord.nickname,
                   };
 
                   Firestore.instance.collection('nyangstar').document(tabrecord.nickname).collection('nyangstaBoard').document().setData(nyangstainfo);

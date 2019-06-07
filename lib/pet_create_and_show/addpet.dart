@@ -170,7 +170,6 @@ class _AddPetPageState extends State<AddPetPage>{
                     'email' : _curEmail,
                     'image': imageUrl,
                     'uid' : _curUID,
-                    'profileUrl': imageUrl,
                   });
               _nameController.clear();
               _nickController.clear();

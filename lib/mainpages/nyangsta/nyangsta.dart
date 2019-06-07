@@ -113,7 +113,7 @@ class _NyangStaPageState extends State<NyangStaPage>{
                       shape: BoxShape.circle,
                       image: DecorationImage(
                         fit: BoxFit.fill,
-                        image: NetworkImage(tabrecord.profileUrl),
+                        image: NetworkImage(tabrecord.image),
                       ),
                     ),
                   ),

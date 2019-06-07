@@ -119,7 +119,7 @@ class _ChatNyangstaPageState extends State<ChatNyangstaPage>{
             ),
           ),
           leading: CircleAvatar(
-            backgroundImage: NetworkImage(tabrecord.profileUrl),
+            backgroundImage: NetworkImage(tabrecord.image),
           ),
           trailing: IconButton(
             onPressed: (){
@@ -130,7 +130,7 @@ class _ChatNyangstaPageState extends State<ChatNyangstaPage>{
                   .collection('nyangcomments').document(tabrecord.nickname + _commandController.text)
                   .setData({
                 'chatUser': tabrecord.nickname,
-                'avatarUrl': tabrecord.profileUrl,
+                'avatarUrl': tabrecord.image,
                 'commendTime': ctime = DateTime.now(),
                 'commend': _commandController.text,
                 'dumy' : true,
