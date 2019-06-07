@@ -30,7 +30,6 @@ class _TodoPageState extends State<TodoPage> {
   void _showDialog(DocumentSnapshot data) {
 
     final record = db.todo.fromSnapshot(data);
-    final record2 = db.Isdue.fromSnapshot(data);
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -44,7 +43,6 @@ class _TodoPageState extends State<TodoPage> {
               child: new Text("확인"),
               onPressed: () {
                 record.reference.delete();
-                record2.reference.delete();
                 Navigator.of(context).pop();
               },
             ),
@@ -86,7 +84,6 @@ class _TodoPageState extends State<TodoPage> {
 
   Widget _doneTodoList(BuildContext context, DocumentSnapshot data){
     final record = db.todo.fromSnapshot(data);
-    final record2 = db.Isdue.fromSnapshot(data);
     return Column(
       children: <Widget>[
         ListTile(

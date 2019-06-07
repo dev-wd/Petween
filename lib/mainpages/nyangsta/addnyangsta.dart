@@ -88,13 +88,18 @@ class _AddNyangStaPageState extends State<AddNyangStaPage>{
                     'write' : _contentController.text,
                     'liker' :[],
                     'isLike' : false,
-                    'chatNum' : 0,
-                    'chatUser' : [],
-                    'selfCommand' : [],
                     'isCommand': _isCommand,
+                    'chatNum': 0,
                     'compareNickName' :tabrecord.nickname,
                   };
+
+                  Map<String, dynamic> nyangstainfosend = {
+                    'nyangstaProfileUrl': tabrecord.image,
+                    'nyangstaNickName' : tabrecord.nickname,
+                  };
+
                   Firestore.instance.collection('nyangstar').document(tabrecord.nickname).collection('nyangstaBoard').document().setData(nyangstainfo);
+                  Firestore.instance.collection('nyangstar').document(tabrecord.nickname).setData(nyangstainfosend);
                   Navigator.of(context).pop();
                 },
               ),

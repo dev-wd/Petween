@@ -27,7 +27,6 @@ class PetweenApp extends StatelessWidget {
       title: 'Shrine',
       home: PreloginPage(),
       routes: <String, WidgetBuilder>{
-        '/alarm': (BuildContext context) => AlarmPage(),
         '/login': (BuildContext context) => LoginPage(),
         '/catchoice': (BuildContext context) => ProfileCreatePage(),
         '/setting': (BuildContext context) => SettingPage(),

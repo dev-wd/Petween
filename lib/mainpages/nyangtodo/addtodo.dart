@@ -120,10 +120,6 @@ class _AddTodoPageState extends State<AddTodoPage>{
                   'duemin' : _duemin,
                 };
                 Firestore.instance.collection('pet').document(tabrecord.petname+_curUID).collection('todo').document().setData(todoinfo);
-                if(isdue){
-                  Firestore.instance.collection('pet').document(tabrecord.petname+_curUID).collection('Isdue').document().setData(todoinfo);
-
-                }
                 _todoController.clear();
                 Navigator.pop(context);
                 Navigator.of(context).pushNamed('/todo');
