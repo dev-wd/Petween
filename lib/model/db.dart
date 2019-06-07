@@ -7,28 +7,9 @@ String userEmail;
 FirebaseUser user;
 File image;
 
-List<String> kindCat = [
-  '노르웨이숲고양이',
-  '데본렉스',
-  '라가머핀',
-  '리팜',
-  '랙돌',
-  '러시안블루',
-  '맹크스고양이',
-  '메인쿤',
-  '발리네즈',
-  '버만',
-  '버마즈',
-  '봄베이',
-  '시베리아고양이',
-  '샴고양이',
-  '셀커크렉스',
-  '소말리',
-  '스코티시폴드',
-  '스핑크스',
-  '싱갸퓨라',
-  '아메리칸밤테일'
-];
+String userNickName;
+List<String> kindCat = ['노르웨이숲고양이','데본렉스','라가머핀','리팜','랙돌','러시안블루','맹크스고양이','메인쿤','발리네즈','버만','버마즈','봄베이','시베리아고양이','샴고양이','셀커크렉스','소말리','스코티시폴드','스핑크스','싱갸퓨라','아메리칸밤테일'];
+
 
 class db {
   String userName;
@@ -47,6 +28,8 @@ class db {
   String image; //고양이 사진
   String title; //QNA 제목
   String info; //QNA 내용
+  String url;
+  List<dynamic> alarm;
   final DocumentReference reference;
 
   db.fromMap(Map<String, dynamic> map, String docID, {this.reference})
@@ -72,8 +55,9 @@ class db {
         kind = map['kind'],
         nickname = map['nickname'],
         petname = map['petname'],
-        uid = map['uid'],
-        image = map['image'];
+        image = map['image'],
+        alarm = map['alarm'],
+        uid = map['uid'];
 
   db.fromSnapshot(DocumentSnapshot snapshot)
       : this.fromMap(snapshot.data, snapshot.documentID,
@@ -213,8 +197,9 @@ class nyangchat {
 
   @override
   String toString() => "nyangchat<$avatarUrl:$chatUser:$commendTime:$commend:$dumy>";
-
 }
+
+
 
 
 

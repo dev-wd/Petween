@@ -25,6 +25,7 @@ List<DropdownMenuItem<String>> dropmonth = [];
 List<DropdownMenuItem<String>> dropday = [];
 List<DropdownMenuItem<String>> dropkind = [];
 List<String> gender= ['남','여','중성'];
+List<dynamic> _list = [];
 
 class AddPetPage extends StatefulWidget {
   //ProfileCreatePage({Key key, this.record}) : super(key:key);
@@ -174,7 +175,7 @@ class _AddPetPageState extends State<AddPetPage>{
               _nameController.clear();
               _nickController.clear();
               Navigator.pop(context);
-              Navigator.of(context).pushNamed('/tab');
+              Navigator.of(context).pushNamed('/catchoice');
 
               /*
                 Navigator.of(context).push(MaterialPageRoute(

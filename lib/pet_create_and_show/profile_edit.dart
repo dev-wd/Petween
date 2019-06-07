@@ -8,10 +8,11 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:petween/model/db.dart' as db;
 import 'package:petween/tab.dart';
+import 'package:petween/model/db.dart';
 
 var _nameController = TextEditingController();
 var _nickController = TextEditingController();
-int _gender = null;
+int _gender;
 String _birthyear = tabrecord.birthyear;
 String _birthmonth = tabrecord.birthmonth;
 String _birthday = tabrecord.birthday;
@@ -19,11 +20,15 @@ String _meetyear = tabrecord.meetyear;
 String _meetmonth = tabrecord.meetmonth;
 String _meetday = tabrecord.meetday;
 String _kindCat = tabrecord.kind;
+
+
 List<DropdownMenuItem<String>> dropyear = [];
 List<DropdownMenuItem<String>> dropmonth = [];
 List<DropdownMenuItem<String>> dropday = [];
 List<DropdownMenuItem<String>> dropkind = [];
 List<String> gender= ['남','여','중성'];
+
+
 String imageUrl = 'https://screenshotlayer.com/images/assets/placeholder.png';
 
 class ProfileEditPage extends StatefulWidget {
