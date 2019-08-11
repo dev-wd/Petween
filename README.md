@@ -3,6 +3,12 @@
 연인 앱 Between을 모방하 만들어진, 고양이와 유저 사이에 다양한 기능을 제공하느 어플리케이션
 D-day, QNA, 냥스타그램을 통한 추억 공유, 가계부 작성, To-do list 및 알람기능 제공
 
+
+
+## Introduction Video
+
+- https://youtu.be/DpCMLPx0HqU
+
 ## Developer
 
 - [김보희](https://github.com/KIMBOHEEE) KIMBOHEEE
