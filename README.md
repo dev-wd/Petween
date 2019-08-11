@@ -1,8 +1,5 @@
 
 
-![petweenlogo.png](.⁨Users⁩/⁨mainea⁩/⁨Desktop/petweenlogo.png⁩)
-
-
 # Petween
 
 연인 앱 Between을 모방하 만들어진, 고양이와 유저 사이에 다양한 기능을 제공하느 어플리케이션
